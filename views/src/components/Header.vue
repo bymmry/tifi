@@ -60,7 +60,7 @@
         <i-col span="18" style="text-align:left">
           <i-row>
             <i-col :key="item.id" @click.native="routerControl(index)" v-for="(item,index) in this.$store.state.router.router" :span="4"
-              :class="{'text-hover':active!==index}">
+              :class="{'text-hover':active!==index,'text-center':index!==0}">
               <span :class="{'active-i-col':active===index}">{{item.msg}}</span>
             </i-col>
           </i-row>

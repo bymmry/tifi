@@ -10,7 +10,6 @@
     line-height: 50px;
     min-width: 1200px
   }
-
   .play-main {
     position: fixed;
     top: 9rem;
@@ -20,7 +19,6 @@
     z-index: 99;
     background: #fff;
   }
-
 </style>
 
 <template>
@@ -29,7 +27,7 @@
       <i-row :gutter="16">
         <i-col span="4" style="font-size:20px">
           <i-icon type="ios-skipbackward"></i-icon>
-          <i-icon style="margin:0 1rem" @click.native="playToggle(false)" :type="music.paused?'play':'pause'"></i-icon>
+          <i-icon style="margin:0 1rem" @click.native="playToggle" :type="music.paused?'play':'pause'"></i-icon>
           <i-icon type="ios-skipforward"></i-icon>
           <img @click="$store.commit('routerActive', 'other');$router.push('/play')" class="cursor" src="../assets/img/mulai.jpg" style="height:50px;width:40px;float:right;padding: 5px 0"
             alt="">
@@ -79,13 +77,13 @@
       musicData() {
         return this.$store.state.musicBox.musicData
       },
-      currTime(){
+      currTime() {
         return this.$store.state.musicBox.currTime
       },
-      totalTime(){
+      totalTime() {
         return this.$store.state.musicBox.totalTime
       },
-      playProgress(){
+      playProgress() {
         return this.$store.state.musicBox.playProgress
       }
     },
@@ -106,7 +104,6 @@
       },
       fastSeek(time) {
         this.music.currentTime = time / 100 * this.music.duration
-        this.playToggle(true)
       },
       changeVolume(volume) {
         this.music.volume = volume / 100
@@ -121,8 +118,8 @@
           this.volume = Number((this.oldVolume * 100).toFixed(0))
         }
       },
-      playToggle(seekFlag) {
-        if (this.music.paused || seekFlag) {
+      playToggle() {
+        if (this.music.paused) {
           this.music.play()
         } else {
           this.music.pause()
@@ -134,16 +131,18 @@
         inserted(el, binding, vnode) {
           el.oncanplaythrough = function () {
             vnode.context.music = el
-            // vnode.context.totalTime = el.duration
-            vnode.context.$store.commit('setTotalTime',el.duration)
+            vnode.context.$store.commit('setTotalTime', el.duration)
             vnode.context.playToggle()
             el.ontimeupdate = function () {
-              vnode.context.$store.commit('setOnPlay',true)
-              vnode.context.$store.commit('setCurrTime',el.currentTime)
-              vnode.context.$store.commit('setPlayProgress',el.currentTime / el.duration * 100)
+              vnode.context.$store.commit('setOnPlay', true)
+              vnode.context.$store.commit('setCurrTime', el.currentTime)
+              vnode.context.$store.commit('setPlayProgress', el.currentTime / el.duration * 100)
             }
             el.onpause = function () {
-              vnode.context.$store.commit('setOnPlay',false)
+              vnode.context.$store.commit('setOnPlay', false)
+            },
+            el.onseeked = function () {
+              vnode.context.playToggle()
             }
           }
         }

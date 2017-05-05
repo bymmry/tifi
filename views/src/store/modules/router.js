@@ -8,6 +8,9 @@ const state = {
     path:'/myMusic',
     msg: '我的音乐'
   }, {
+    path:'/friends',
+    msg: '朋友'
+  }, {
     path:'/stories',
     msg: '故事'
   }]
