@@ -75,7 +75,7 @@
             </button>
           </i-col>
         </i-row>
-        <i-row>
+        <i-row style="margin-bottom:2rem">
           <i-col span="12">
             <h3>今日播放最多</h3>
           </i-col>

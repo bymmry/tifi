@@ -58,9 +58,9 @@
               type: 'audio/wav'
             });
             var formData = new FormData();
-            formData.append('audioTest', file)
-            makeXMLHttpRequest('http://localhost:5000/audioRec', formData, function () {
-              var downloadURL = 'http://localhost:5000/audioRec' + file.name;
+            formData.append('audioMic', file)
+            makeXMLHttpRequest('http://localhost:5000/api/audioRec', formData, function () {
+              var downloadURL = 'http://localhost:5000/api/audioRec' + file.name;
               console.log('File uploaded to this path:', downloadURL);
             });
           }
