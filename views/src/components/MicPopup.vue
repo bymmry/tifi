@@ -59,12 +59,12 @@
             });
             var formData = new FormData();
             formData.append('audioMic', file)
-            makeXMLHttpRequest('http://localhost:5000/api/audioRec', formData, function () {
-              var downloadURL = 'http://localhost:5000/api/audioRec' + file.name;
-              console.log('File uploaded to this path:', downloadURL);
-            });
+            api.audioRec(formData)
+            // makeXMLHttpRequest('http://localhost:5000/api/audioRec', formData, function () {
+            //   var downloadURL = 'http://localhost:5000/api/audioRec' + file.name;
+            //   console.log('File uploaded to this path:', downloadURL);
+            // });
           }
-
           function makeXMLHttpRequest(url, data, callback) {
             var request = new XMLHttpRequest();
             request.onreadystatechange = function () {
@@ -77,11 +77,9 @@
           }
           captureUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
           let mediaRecorder
-
           document.querySelector('#saveMic').onclick = function () {
             mediaRecorder.save()
           }
-
           function onMediaSuccess(stream) {
             // let audio = document.getElementById('audio');
             // audio.src = URL.createObjectURL(stream)
@@ -114,7 +112,6 @@
               }, 10100)
             }
           }
-
           function onMediaError(e) {
             console.error('media error', e);
           }
@@ -124,5 +121,4 @@
       }
     }
   }
-
 </script>

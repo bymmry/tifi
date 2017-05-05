@@ -2,13 +2,15 @@ import axios from 'axios'
 import {
   Message
 } from 'iview'
-const instance = axios.create();
-if (process.SERVER_BUILD) {
-  instance.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
-}
+const instance = axios.create()
+// instance.baseURL = 'http://localhost:5000/api/'
+// if (process.SERVER_BUILD) {
+//   instance.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 5000}`
+// }else{
+//   instance.baseURL = 'http://localhost:5000'
+// }
 instance.defaults.timeout = 5000
 instance.defaults.headers.post['Content-Type'] = 'application/json'
-
 instance.interceptors.request.use(config => {
   if (localStorage.getItem('token')) {
     config.headers.Authorization = `token ${localStorage.getItem('token')}`
@@ -20,7 +22,10 @@ instance.interceptors.request.use(config => {
 })
 // axios拦截响应
 instance.interceptors.response.use(response => {
-  if (response.data.success) {
+  if (response.data.code===200) {
+    if(response.data.info){
+      Message.success(response.data.info)
+    }
     return response.data
   } else {
     Message.config({
@@ -34,30 +39,13 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-
+let baseURL = 'http://localhost:5000'
 export default {
-  //发送手机验证码
-  getPhoneCode(data){
-    return instance.post('/api/getPhoneCode',data)
+  //音频识别
+  audioRec(data){
+    return instance.post(baseURL+'/api/audioRec', data)
   },
-  // 获取所有用户
-  users() {
-    return instance.get('/api/users')
-  },
-  // 用户登录
-  userLogin(data) {
-    return instance.post('/api/login', data)
-  },
-  //用户注册
-  userReg(data) {
-    return instance.post('/api/reg', data)
-  },
-  //上传音乐
-  uploadMusic(data) {
-    return instance.post('/api/uploadMusic', data)
-  },
-  //获取音乐
-  musics() {
-    return instance.get('/api/musics')
+  createArtist(data){
+    return instance.post(baseURL+'/createArtist', data)
   }
 }

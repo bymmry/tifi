@@ -30,7 +30,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         //这里的target填服务端的端口的接口地址
-        target: 'http://localhost:5000/spa/',
+        target: 'http://localhost:3000',
         changeOrigin: true,
         pathRewrite: {
           '/api': ''
