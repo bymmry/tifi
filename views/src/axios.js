@@ -9,7 +9,7 @@ const instance = axios.create()
 // }else{
 //   instance.baseURL = 'http://localhost:5000'
 // }
-instance.defaults.timeout = 5000
+instance.defaults.timeout = 60000
 instance.defaults.headers.post['Content-Type'] = 'application/json'
 instance.interceptors.request.use(config => {
   if (localStorage.getItem('token')) {
@@ -45,7 +45,44 @@ export default {
   audioRec(data){
     return instance.post(baseURL+'/api/audioRec', data)
   },
+  //添加歌手信息
   createArtist(data){
     return instance.post(baseURL+'/createArtist', data)
+  },
+  //查询歌手信息
+  retrieveArtist(data){
+    if (data) {
+      return instance.post(baseURL+'/retrieveArtist', data)
+    } else {
+      return instance.post(baseURL+'/retrieveArtist')
+    }   
+  },
+  //添加专辑信息
+  createAlbum(data){
+    return instance.post(baseURL+'/createAlbum', data)
+  },
+  //查询专辑信息
+  retrieveAlbum(data){
+    if (data) {
+      return instance.post(baseURL+'/retrieveAlbum', data)
+    } else {
+      return instance.post(baseURL+'/retrieveAlbum')
+    }
+  },
+  //添加歌曲信息
+  createMusic(data){
+    return instance.post(baseURL+'/createMusic', data)
+  },
+  //查看数据库中音乐
+  retrieveMusic(data){
+    if(data){
+      return instance.post(baseURL+'/retrieveMusic', data)
+    }else{
+      return instance.post(baseURL+'/retrieveMusic')
+    }
+  },
+  //下载MP3
+  download(url){
+    return instance.get(baseURL+'/download'+url)
   }
 }

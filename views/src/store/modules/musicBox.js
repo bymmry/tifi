@@ -1,5 +1,6 @@
 import api from '../../axios'
 const state = {
+  el:'',
   musicData:'',
   onPlay:false,
   currTime:0,
@@ -9,6 +10,9 @@ const state = {
 const mutations = {
   playMuisc(state,payload) {
     state.musicData = payload
+  },
+  setEl(state,payload){
+    state.el = payload
   },
   setCurrTime(state,payload){
     state.currTime = payload

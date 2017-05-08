@@ -11,7 +11,6 @@ instance.defaults.headers.post['Content-Type'] = 'application/json'
 
 // axios拦截响应
 instance.interceptors.response.use(response => {
-  console.log(response)
   return response.data
 }, err => {
   return Promise.reject(err)
@@ -19,8 +18,16 @@ instance.interceptors.response.use(response => {
 let baseURL = 'http://localhost:3000'
 export default {
   //使用网易云的搜索
-  search(data,type=100){
-    return instance.get(baseURL+'/search?type='+type+'&keywords='+data)
+  search(data,type){
+    return instance.get(baseURL+'/search?limit=100&type='+type+'&keywords='+data)
+  },
+  //获取歌曲的歌词
+  getLyric(id){
+    return instance.get(baseURL+'/lyric?id='+id)
+  },
+  //获取歌曲评论
+  getComment(id,offset=0){
+    return instance.get(baseURL+'/comment/music?limit=10&offset='+offset+'&id='+id)
   },
   //获取歌手的专辑
   getAlbum(id){

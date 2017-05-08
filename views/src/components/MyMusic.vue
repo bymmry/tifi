@@ -70,11 +70,13 @@
         <affix @on-change="fixedListChange">
           <i-row>
             <i-col span="1">
-              <h1>我的歌单</h1>
+              <h1>
+                我的歌单
+              </h1>
             </i-col>
             <i-col span="20" offset="3">
               <div class="dir"></div>
-              <div style="height:60vh">
+              <div style="height:50vh">
                 <div class="my-playlist" :class="{active:n==1}" v-for="n in 3">
                   <img src="../assets/img/mulai.jpg" class="min-cover" />
                   <div style="float:left">
@@ -88,8 +90,14 @@
                 </div>
               </div>
               <div class="dir"></div>
+              <div class="text-center">
+            <mu-float-button class="card2" :mini="true">
+              +
+            </mu-float-button>
+          </div>
             </i-col>
           </i-row>
+          
         </affix>
       </i-col>
       <i-col span="17" :offset="fixedList?'7':'1'" style="z-index:11">
@@ -217,17 +225,17 @@
           </i-col>
         </i-row>
         <br /><br />
-        <talk></talk>
+        <comment></comment>
       </i-col>
     </i-row>
     <div style="height:50px"></div>
   </div>
 </template>
 <script lang="">
-  import talk from './Talk.vue'
+  import comment from './comment.vue'
   export default {
-    components:{
-      talk
+    components: {
+      comment
     },
     data() {
       return {

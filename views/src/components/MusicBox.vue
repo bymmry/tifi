@@ -19,24 +19,36 @@
     z-index: 99;
     background: #fff;
   }
+  .cover{
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height:40px;
+    width:40px;
+    float:right;
+    margin-top: 5px;
+    /*border: 1px solid #ccc*/
+  }
 </style>
 
 <template>
   <div class="music-player card">
     <div style="width:1000px;margin:0 auto">
       <i-row :gutter="16">
-        <i-col span="4" style="font-size:20px">
+        <i-col span="4" style="font-size:20px;">
           <i-icon type="ios-skipbackward"></i-icon>
-          <i-icon style="margin:0 1rem" @click.native="playToggle" :type="music.paused?'play':'pause'"></i-icon>
+          <i-icon style="margin:0 1rem;" @click.native="playToggle" :type="music.paused?'play':'pause'"></i-icon>
           <i-icon type="ios-skipforward"></i-icon>
-          <img @click="$store.commit('routerActive', 'other');$router.push('/play')" class="cursor" src="../assets/img/mulai.jpg" style="height:50px;width:40px;float:right;padding: 5px 0"
-            alt="">
+          <div @click="$store.commit('routerActive', 'other');$router.push('/play')" class="cover" 
+          :style="{'background-image':'URL('+musicData.album.picUrl+')'}">
+          </div>
         </i-col>
         <i-col span="15">
           <i-row style="line-height:25px">
             <i-col span="20">
               <div class="text-left">
-                {{musicData.title}}
+                {{musicData.artist.name}} - {{musicData.music.name}}
               </div>
             </i-col>
             <i-col span="4" class="text-right">
@@ -131,6 +143,7 @@
         inserted(el, binding, vnode) {
           el.oncanplaythrough = function () {
             vnode.context.music = el
+            vnode.context.$store.commit('setEl', el)
             vnode.context.$store.commit('setTotalTime', el.duration)
             vnode.context.playToggle()
             el.ontimeupdate = function () {

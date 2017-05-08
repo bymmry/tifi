@@ -15,7 +15,7 @@ import Tooltip from 'iview/src/components/tooltip'
 import affix from 'iview/src/components/affix'
 import modal from 'iview/src/components/modal'
 import circle from 'iview/src/components/circle'
-
+import page from 'iview/src/components/page'
 
 
 Vue.component('iRow', Row)
@@ -29,6 +29,7 @@ Vue.component('tooltip', Tooltip)
 Vue.component('affix', affix)
 Vue.component('modal', modal)
 Vue.component('iCircle', circle)
+Vue.component('page', page)
 
 
 import slider from 'muse-components/slider'
@@ -36,6 +37,10 @@ import badge from 'muse-components/badge'
 import textField from 'muse-components/textField'
 import pagination from 'muse-components/pagination'
 import linearProgress from 'muse-components/linearProgress'
+import dropDownMenu from 'muse-components/dropDownMenu'
+import flatButton from 'muse-components/flatButton'
+import floatButton from 'muse-components/floatButton'
+
 
 
 import 'muse-ui/dist/theme-carbon.css'
@@ -44,6 +49,8 @@ Vue.component(badge.name, badge)
 Vue.component(textField.name, textField)
 Vue.component(pagination.name, pagination)
 Vue.component(linearProgress.name, linearProgress)
+Vue.component(flatButton.name, flatButton)
+Vue.component(floatButton.name, floatButton)
 
 Vue.config.productionTip = false
 

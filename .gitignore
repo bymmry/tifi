@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+upload/
 mp3/
 test/
 npm-debug.log*

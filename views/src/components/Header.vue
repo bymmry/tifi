@@ -69,9 +69,9 @@
           <Dropdown @on-click="headerControl" @on-visible-change="dropdown">
             <img src="../assets/img/mulai.jpg" class="user-img card card-hover" alt="">
             <dropdown-menu slot="list" style="text-align:center">
-              <dropdown-item name="user">个人中心</dropdown-item>
-              <dropdown-item name="UploadMusic">上传音乐</dropdown-item>
-              <dropdown-item name="logOut">退出登陆</dropdown-item>
+              <dropdown-item name="user" style="line-height:40px">个人中心</dropdown-item>
+              <dropdown-item name="UploadMusic" style="line-height:40px">上传音乐</dropdown-item>
+              <dropdown-item name="logOut" style="line-height:40px">退出登陆</dropdown-item>
             </dropdown-menu>
           </Dropdown>
         </i-col>

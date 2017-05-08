@@ -4,9 +4,9 @@ def artistInit(db):
             'collection': 'artist',
             'strict': False,
         }
-        wyID = db.IntField(required=True)
+        wyID = db.IntField()
         name = db.StringField(required=True)
         picUrl = db.StringField()
-        introduction = db.DictField()
+        introduction = db.ListField()
     return Artist
 

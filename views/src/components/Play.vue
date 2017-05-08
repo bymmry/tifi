@@ -5,6 +5,14 @@
   }
 
   .rotateImg {
+    width: 200px;
+    height: 200px;
+    margin-left: 10px;
+    border-radius: 50%;
+    transition: all 1s;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     -webkit-animation: change 50s linear infinite
   }
 
@@ -29,13 +37,15 @@
       <i-col span="7" class="text-left">
         <affix @on-change="fixedPlayLeft">
           <div style="width:220px">
-            <i-circle :percent="playProgress" stroke-color="#f45754" :size="220" :stroke-width="1" :trail-width="0.5">
-              <img :style="onPlay?imgPlay:imgPause" :class="{rotateImg:true}" src="../assets/img/mulai.jpg" style="width:200px;height:200px;border-radius:50%;transition: all 1s;">
+            <i-circle :percent="playProgress" stroke-color="#41464b" :size="220" :stroke-width="1" :trail-width="0.5">
+              <div :style="onPlay?imgPlay:imgPause" :class="{rotateImg:true}">
+              </div>
+              <!--<img :src="musicData.album.picUrl" style="">-->
             </i-circle>
             <br/><br/>
             <div class="text-center" v-if="playLeft">
-              <h3>霜雪千年</h3>
-              <small>排骨教主</small>
+              <h3>{{musicData.music.name}}</h3>
+              <small>{{musicData.artist.name}}</small>
               <br/><br/>
             </div>
             <div class="text-center">
@@ -71,27 +81,36 @@
       </i-col>
       <i-col span="17" :offset="playLeft?7:0">
         <i-row>
-          <i-col span="12">
-            <h2>霜雪千年</h2>
-          </i-col>
-          <i-col span="2" offset="4" class="text-right">
+          <i-col span="18">
             <h2>
-              <i-icon style="color:red" type="android-favorite"></i-icon>
+              {{musicData.music.name}} &nbsp;
+              <tooltip trigger="hover" content="我喜欢">
+                <i-icon class="cursor" type="android-favorite-outline"></i-icon>
+              </tooltip>
             </h2>
           </i-col>
           <i-col span="2" class="text-right">
-            <h2>
-              <i-icon type="refresh"></i-icon>
+            <h2 class="cursor">
+              <tooltip v-if="onPlay" trigger="hover" content="点击播放">
+                <i-icon @click.native="musicEl.pause()" type="pause"></i-icon>
+              </tooltip>
+              <tooltip v-else trigger="hover" content="点击暂停">
+                <i-icon @click.native="musicEl.play()" type="play"></i-icon>
+              </tooltip>
             </h2>
           </i-col>
           <i-col span="2" class="text-right">
-            <h2>
-              <i-icon type="shuffle"></i-icon>
+            <h2 class="cursor">
+              <tooltip trigger="hover" content="重新播放">
+                <i-icon @click.native="replay" type="refresh"></i-icon>
+              </tooltip>
             </h2>
           </i-col>
           <i-col span="2" class="text-right">
-            <h2>
-              <i-icon type="arrow-down-c"></i-icon>
+            <h2 class="cursor">
+              <tooltip trigger="hover" content="下载该曲">
+                <i-icon @click.native="download" type="arrow-down-c"></i-icon>
+              </tooltip>
             </h2>
           </i-col>
         </i-row>
@@ -112,7 +131,7 @@
                   <div class="dir"></div>
                   专辑<br/><br/>
                   <div class="text-link">
-                    排骨翻唱的合集
+                    {{musicData.album.name}}
                   </div>
                   <div class="dir"></div>
                 </i-col>
@@ -120,7 +139,7 @@
                   <div class="dir"></div>
                   歌手<br/><br/>
                   <div class="text-link">
-                    排骨教主
+                    {{musicData.artist.name}}
                   </div>
                   <div class="dir"></div>
                 </i-col>
@@ -135,37 +154,51 @@
           </i-col>
         </i-row>
         <br/><br/>
-        <talk></talk>
+        <comment v-if="commentShow" @pageChange="pageChange" :data="commentData"></comment>
       </i-col>
     </i-row>
     <div style="height:50px"></div>
   </div>
 </template>
 <script>
-  import talk from './Talk.vue'
+  import api from '../axios.js'
+  import wyApi from '../wyApi.js'
+  import comment from './comment.vue'
   export default {
     components: {
-      talk
+      comment
     },
     data() {
       return {
-        lyric: "[00:00.00] 作曲 : COP [00:01.00] 作词 : COP [00:14.01]梨花香缠着衣角掠过熙攘 [00:19.69]复悄入红帘深帐 [00:22.98]听枝头黄鹂斗渠儿细风绕指淌 [00:27.80]坐船舫兰桨拨开雾霭迷茫 [00:33.27]不觉已一日过半 [00:36.53]过眼的葱郁风光悉数泛了黄 [00:41.74]褪尽温度的风无言牵引中 [00:45.29]便清晰了在此的眉目 [00:48.98]暮色的消融隐约了晦朔葱茏 [00:54.36]在这老街回眸烟云中追溯我是谁 [00:58.90]只消暮雨点滴便足以粉饰这是非 [01:02.43]待这月色涌起谁人轻叩这门扉 [01:09.03]苔绿青石板街 [01:11.40]斑驳了流水般岁月 [01:12.81]小酌三盏两杯理不清缠绕的情结 [01:16.13]在你那淡漠眉间 [01:19.35]瞥见离人的喜悲霜雪 [01:36.22]楼阁现尘飞雾散荧光蹁跹 [01:41.73]显露出斑驳石阶 [01:45.24]入眼是落英纷然芳草入深院 [01:49.80]凭栏杆小桌上置琼觞两盏 [01:55.54]阖眼听清风疏叶 [01:58.92]似曾有欢声笑言萦绕这高轩 [02:04.07]云动寂静鸣蝉雨坠激漪涟 [02:07.59]皴擦点染勾勒这世间 [02:11.36]缘起的一眼定格了三生千年 [02:16.48]在这老街回眸烟云中追溯我是谁 [02:21.26]只消暮雨点滴便足以粉饰这是非 [02:24.68]待这月色涌起谁人轻叩这门扉 [02:31.27]苔绿青石板街 [02:33.49]斑驳了流水般岁月 [02:34.84]小酌三盏两杯理不清缠绕的情结 [02:38.40]在你那淡漠眉间 [02:41.64]瞥见离人的喜悲霜雪 [02:58.96]三月梨花雪几载开了又败 [03:02.25]笔锋走黑白丹青中穿插无奈 [03:05.88]彼时那弯月何时初现于江畔 [03:09.32]而我又在待何人 [03:12.00]在这亭台回眸千年后 [03:14.72]忆起你是谁 [03:16.30]只消月色隐约便足以勾勒这是非 [03:19.49]待这回忆涌起恍惚之间已下泪 [03:25.94]枫红十里长街 [03:27.92]红帘后谁人蹙着眉 [03:29.81]遥梦桑竹桃源 [03:31.37]轮回中曾道别的地点 [03:34.08]再相见 [03:35.10]消融你眉间 [03:38.98]悲戚霜雪 [03:53.13] ",
-        lyricText: [],
-        lyricTime: [],
+        lyric: [],
+        lyricText: ['暂无歌词'],
+        lyricTime: [0],
         activeLrcIndex: 0,
+        commentShow: false,
+        commentData: {},
         imgPause: {
+          'background-image': '',
           'animation-play-state': 'paused',
           '-webkit-animation-play-state': 'paused'
         },
         imgPlay: {
+          'background-image': '',
           'animation-play-state': 'running',
           '-webkit-animation-play-state': 'running'
         },
         activeLyricTop: 0,
-        playLeft:false
+        playLeft: false
       }
     },
     computed: {
+      musicData() {
+        this.imgPause['background-image'] = 'URL(' + this.$store.state.musicBox.musicData.album.picUrl + ')'
+        this.imgPlay['background-image'] = 'URL(' + this.$store.state.musicBox.musicData.album.picUrl + ')'
+        return this.$store.state.musicBox.musicData
+      },
+      musicEl() {
+        return this.$store.state.musicBox.el
+      },
       onPlay() {
         return this.$store.state.musicBox.onPlay
       },
@@ -202,8 +235,27 @@
         }
         return minute + ':' + second
       },
-      fixedPlayLeft(val){
-        this.playLeft=val
+      fixedPlayLeft(val) {
+        this.playLeft = val
+      },
+      replay() {
+        this.musicEl.currentTime = 0;
+        this.$store.commit('setCurrTime', 0)
+        this.activeLrcIndex = 0
+        this.musicEl.play()
+      },
+      download() {
+        window.location.href = 'http://localhost:5000/download' + this.musicData.music.url
+        // api.download(this.musicData.music.url)
+      },
+      getCommont(page) {
+        wyApi.getComment(this.musicData.music.wyID, page).then((data) => {
+          this.commentData = data
+          this.commentShow = true
+        })
+      },
+      pageChange(page) {
+        this.getCommont(page)
       }
     },
     directives: {
@@ -217,28 +269,34 @@
       }
     },
     mounted() {
-      let left = [],
-        right = []
-      for (let index = 0; index < this.lyric.length; index++) {
-        if (this.lyric.charAt(index) == "[") {
-          left.push(index)
+      wyApi.getLyric(this.musicData.music.wyID).then((data) => {
+        if (data.code === 200) {
+          this.lyric = data.lrc.lyric
+          let left = [],
+            right = []
+          for (let index = 0; index < this.lyric.length; index++) {
+            if (this.lyric.charAt(index) == "[") {
+              left.push(index)
+            }
+            if (this.lyric.charAt(index) == "]") {
+              right.push(index)
+            }
+          }
+          let base = [],
+            text = [],
+            time = []
+          for (let index = 0; index < left.length; index++) {
+            if (index !== left.length - 1) {
+              base.push(this.lyric.substring(left[index], left[index + 1]))
+              text.push(this.lyric.substring(right[index] + 1, left[index + 1]))
+            }
+            time.push(this.lyric.substring(left[index] + 1, right[index]))
+          }
+          this.lyricText = text
+          this.lyricTime = time       
         }
-        if (this.lyric.charAt(index) == "]") {
-          right.push(index)
-        }
-      }
-      let base = [],
-        text = [],
-        time = []
-      for (let index = 0; index < left.length; index++) {
-        if (index !== left.length - 1) {
-          base.push(this.lyric.substring(left[index], left[index + 1]))
-          text.push(this.lyric.substring(right[index] + 1, left[index + 1]))
-        }
-        time.push(this.lyric.substring(left[index] + 1, right[index]))
-      }
-      this.lyricText = text
-      this.lyricTime = time
+      })
+      this.getCommont(0)
     }
   }
 

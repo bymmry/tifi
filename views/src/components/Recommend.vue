@@ -83,11 +83,12 @@
             <a>Top 100</a>
           </i-col>
         </i-row>
-        <i-row v-for="(item,index) in playTop" :key="item.id" style="margin-bottom:1rem">
+        <i-row v-for="(item,index) in playTop" :key="index" style="margin-bottom:1rem">
           <i-col span="22">
             <div class="">
               <i-icon style="cursor:pointer" type="play" @click.native="playMusic(item)"></i-icon>
-              &nbsp;&nbsp; {{item.realName}}
+              &nbsp;&nbsp; 
+              {{item.artist.name}} - {{item.music.name}}
             </div>
           </i-col>
           <i-col span="2">
@@ -107,33 +108,27 @@
       return {
         msg: 'TIFI MUSIC - 大道至简 悟在天成',
         hotPlayList: ['华语', '流行', '老歌', '粤语', '英文', '摇滚', '民谣'],
-        playTop: [{
-          id: '1',
-          realName: '排骨教主 - 霜雪千年',
-          fileName: 'shuangxueqiannian.mp3',
-          path: 'mp3/shuangxueqiannian.mp3',
-          size: '9651151',
-          type: 'audio/mp3'
-        }]
+        playTop: []
       }
     },
     methods: {
       async getMusics() {
-        let musics = await api.musics()
-        if (musics.success) {
-          console.log(musics)
-          this.playTop = musics.data
+        let data = await api.retrieveMusic()
+        if (data.code===200) {
+          this.playTop = data.data
         }
       },
       playMusic(item) {
         this.$store.commit('playMuisc', {
-          url: 'http://localhost:5000/mp3/' + item.fileName,
-          title: item.realName
+          url: 'http://localhost:5000' + item.music.url,
+          artist:item.artist,
+          album:item.album,
+          music:item.music
         })
       }
     },
     mounted() {
-      // this.getMusics()
+      this.getMusics()
     }
   }
 

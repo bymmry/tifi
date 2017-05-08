@@ -1,15 +1,16 @@
-from datetime import datetime
-
-
 def musicInit(db):
-    class Todo(db.Document):
+    class Music(db.Document):
         meta = {
-            'collection': 'todo',
-            'ordering': ['-create_at'],
-            'strict': False,
+            'collection': 'music',
+            'strict': False
         }
-        task = db.StringField(required=True)
-        create_at = db.DateTimeField(default=datetime.now)
-        is_completed = db.BooleanField(default=False)
-    return Todo
+        wyID = db.IntField()
+        name = db.StringField(required=True)
+        albumID = db.StringField()
+        type = db.StringField()
+        url = db.StringField()
+        bps = db.StringField()
+        size = db.FloatField()
+        commentID = db.StringField()
+    return Music
 
