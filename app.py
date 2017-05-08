@@ -9,6 +9,7 @@ from model.artist import artistInit
 from model.album import albumInit
 from model.music import musicInit
 # controller
+from controller.test import test
 from controller.index import index
 from controller.audioRec import audioRec
 from controller.artist import createArtist
@@ -42,9 +43,7 @@ def index_c():
     return index()
 
 
-@app.route('/test')
-def test_c():
-    return send_file('testViews/test.html')
+test(app, db)
 
 
 @app.route('/spa/<path>')
