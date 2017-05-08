@@ -42,6 +42,11 @@ def index_c():
     return index()
 
 
+@app.route('/test')
+def test_c():
+    return send_file('testViews/test.html')
+
+
 @app.route('/spa/<path>')
 def spa(path):
     return send_file('views/dist/index.html')
