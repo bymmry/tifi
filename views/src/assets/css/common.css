@@ -1,6 +1,7 @@
 html body {
   min-width: calc(1000px + 12rem);
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   /*background-image: url('../img/bg.png');
 	background-position: center 0;
 background-repeat: no-repeat;
@@ -72,6 +73,18 @@ background-size: cover;*/
 .dir {
   background: #ccc;
   height: 1px;
+  width: 100%;
+  margin: .5rem 0
+}
+.wdir {
+  border: 0;
+  height: 0.5px;
+  margin: .5rem 0;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
+}
+.mdir{
+  background: #f0f0f0;
+  height: .5px;
   width: 100%;
   margin: .5rem 0
 }

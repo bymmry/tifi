@@ -3,8 +3,32 @@
 import json
 import os
 from flask import jsonify, request
+# model
+from model.artist import artistInit
+from model.album import albumInit
+from model.music import musicInit
+
+
 UPLOADPATH = '/upload/music/'
 PATH = os.getcwd() + UPLOADPATH
+
+
+def music(app, db):
+    Artist = artistInit(db)
+    Album = albumInit(db)
+    Music = musicInit(db)
+    
+    @app.route('/createMusic', methods=['POST'])
+    def createMusic_c():
+        return createMusic(Music)
+
+    @app.route('/updateMusic', methods=['POST'])
+    def updateMusic_c():
+        return updateMusic(Music)
+
+    @app.route('/retrieveMusic', methods=['POST'])
+    def retrieveMusic_c():
+        return retrieveMusic(Artist, Album, Music)
 
 
 def createMusic(Music):
@@ -151,7 +175,12 @@ def retrieveMusic(Artist, Album, Music):
                     else:
                         album = {}
                 data.append({
-                    'music': music,
+                    'music': {
+                        'id': str(music['id']),
+                        'name': music['name'],
+                        'url': music['url'],
+                        'wyID': music['wyID']
+                    },
                     'artist': artist,
                     'album': album
                 })

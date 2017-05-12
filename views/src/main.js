@@ -16,7 +16,7 @@ import affix from 'iview/src/components/affix'
 import modal from 'iview/src/components/modal'
 import circle from 'iview/src/components/circle'
 import page from 'iview/src/components/page'
-
+import Carousel from 'iview/src/components/carousel'
 
 Vue.component('iRow', Row)
 Vue.component('iCol', Col)
@@ -30,6 +30,8 @@ Vue.component('affix', affix)
 Vue.component('modal', modal)
 Vue.component('iCircle', circle)
 Vue.component('page', page)
+Vue.component('carousel', Carousel)
+Vue.component('carouselItem', Carousel.Item)
 
 
 import slider from 'muse-components/slider'

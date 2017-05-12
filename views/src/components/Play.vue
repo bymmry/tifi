@@ -33,7 +33,8 @@
 </style>
 <template>
   <div>
-    <i-row>
+    <i-row >
+      <div style="position:fixed;z-index:-1;opacity:0">{{wyID}}</div>
       <i-col span="7" class="text-left">
         <affix @on-change="fixedPlayLeft">
           <div style="width:220px">
@@ -58,21 +59,21 @@
                 播放
               </div>
               <div class="text-right" style="font-size:25px">
-                3062
+                {{commentData.total*2}}
               </div>
               <div class="dir"></div>
               <div class="text-left" style="font-size:10px">
                 收藏
               </div>
               <div class="text-right" style="font-size:25px">
-                4312
+                {{(commentData.total/2).toFixed()}}
               </div>
               <div class="dir"></div>
               <div class="text-left" style="font-size:10px">
                 评论
               </div>
               <div class="text-right" style="font-size:25px">
-                5016
+                {{commentData.total}}
               </div>
               <div class="dir"></div>
             </div>
@@ -91,10 +92,10 @@
           </i-col>
           <i-col span="2" class="text-right">
             <h2 class="cursor">
-              <tooltip v-if="onPlay" trigger="hover" content="点击播放">
+              <tooltip v-if="onPlay" trigger="hover" content="点击暂停">
                 <i-icon @click.native="musicEl.pause()" type="pause"></i-icon>
               </tooltip>
-              <tooltip v-else trigger="hover" content="点击暂停">
+              <tooltip v-else trigger="hover" content="点击播放">
                 <i-icon @click.native="musicEl.play()" type="play"></i-icon>
               </tooltip>
             </h2>
@@ -145,7 +146,7 @@
                 </i-col>
               </i-row>
             </div>
-            <div id="lyricScroll" style="height:400px;overflow:auto" v-lyricScroll>
+            <div style="height:400px;overflow:auto" v-lyricScroll>
               <div v-getActiveLyricTop="index===activeLrcIndex" :class="{activeLrc:index===activeLrcIndex}" v-for="(item,index) in lyricText"
                 style="line-height:30px">
                 {{item}}
@@ -154,7 +155,7 @@
           </i-col>
         </i-row>
         <br/><br/>
-        <comment v-if="commentShow" @pageChange="pageChange" :data="commentData"></comment>
+        <comment v-if="commentShow" @pageChange="pageChange" :data="commentData" :hot="hotComment"></comment>
       </i-col>
     </i-row>
     <div style="height:50px"></div>
@@ -176,6 +177,7 @@
         activeLrcIndex: 0,
         commentShow: false,
         commentData: {},
+        hotComment: '',
         imgPause: {
           'background-image': '',
           'animation-play-state': 'paused',
@@ -221,6 +223,38 @@
       },
       playProgress() {
         return this.$store.state.musicBox.playProgress
+      },
+      wyID() {
+        wyApi.getLyric(this.$store.state.musicBox.musicData.music.wyID).then((data) => {
+          if (data.code === 200) {
+            this.activeLrcIndex = 0
+            this.lyric = data.lrc.lyric
+            let left = [],
+              right = []
+            for (let index = 0; index < this.lyric.length; index++) {
+              if (this.lyric.charAt(index) == "[") {
+                left.push(index)
+              }
+              if (this.lyric.charAt(index) == "]") {
+                right.push(index)
+              }
+            }
+            let base = [],
+              text = [],
+              time = []
+            for (let index = 0; index < left.length; index++) {
+              if (index !== left.length - 1) {
+                base.push(this.lyric.substring(left[index], left[index + 1]))
+                text.push(this.lyric.substring(right[index] + 1, left[index + 1]))
+              }
+              time.push(this.lyric.substring(left[index] + 1, right[index]))
+            }
+            this.lyricText = text
+            this.lyricTime = time
+          }
+        })
+        this.getCommont(0)
+        return this.$store.state.musicBox.musicData.music.wyID
       }
     },
     methods: {
@@ -249,8 +283,11 @@
         // api.download(this.musicData.music.url)
       },
       getCommont(page) {
-        wyApi.getComment(this.musicData.music.wyID, page).then((data) => {
+        wyApi.getComment(this.musicData.music.wyID, page * 10).then((data) => {
           this.commentData = data
+          if (page == 0) {
+            this.hotComment = data.hotComments
+          }
           this.commentShow = true
         })
       },
@@ -269,34 +306,7 @@
       }
     },
     mounted() {
-      wyApi.getLyric(this.musicData.music.wyID).then((data) => {
-        if (data.code === 200) {
-          this.lyric = data.lrc.lyric
-          let left = [],
-            right = []
-          for (let index = 0; index < this.lyric.length; index++) {
-            if (this.lyric.charAt(index) == "[") {
-              left.push(index)
-            }
-            if (this.lyric.charAt(index) == "]") {
-              right.push(index)
-            }
-          }
-          let base = [],
-            text = [],
-            time = []
-          for (let index = 0; index < left.length; index++) {
-            if (index !== left.length - 1) {
-              base.push(this.lyric.substring(left[index], left[index + 1]))
-              text.push(this.lyric.substring(right[index] + 1, left[index + 1]))
-            }
-            time.push(this.lyric.substring(left[index] + 1, right[index]))
-          }
-          this.lyricText = text
-          this.lyricTime = time       
-        }
-      })
-      this.getCommont(0)
+      console.log(this.wyID)
     }
   }
 

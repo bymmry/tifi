@@ -21,7 +21,8 @@ const router = new Router({
     },
     {
       path: '/search',
-      component: Search
+      component: Search,
+      meta: { notKeepAlive: true }
     },
     {
       path: '/myMusic',

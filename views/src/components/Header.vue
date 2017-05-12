@@ -41,33 +41,45 @@
     transition: all 218ms;
     border-bottom: 2px solid #3d3d3d
   }
+
   .user-img {
-    margin-top:calc(1.5rem - 18px);
+    margin-top: calc(1.5rem - 18px);
     width: 40px;
     height: 40px;
     border-radius: 50%
   }
 
+  .user-img-none {
+    margin-top: calc(1.5rem - 18px);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    line-height: 40px;
+  }
+
 </style>
 
 <template lang="html">
-  <div class="header">
+  <div class="header" style="padding:3rem 0">
     <div style="line-height:3rem;position:relative">
       <div class="g-logo">
         <button class="logo">TI/FI</button>
       </div>
       <i-row>
-        <i-col span="18" style="text-align:left">
-          <i-row>
-            <i-col :key="item.id" @click.native="routerControl(index)" v-for="(item,index) in this.$store.state.router.router" :span="4"
-              :class="{'text-hover':active!==index,'text-center':index!==0}">
-              <span :class="{'active-i-col':active===index}">{{item.msg}}</span>
-            </i-col>
-          </i-row>
+        <i-col :span="18" :style="{'text-align':'left'}">
+          <div style="float:left;padding-right:2rem" @click="routerControl(index)" v-for="(item,index) in this.$store.state.router.router"
+            :class="{'text-hover':active!==index,'text-center':index!==0}">
+            <span :class="{'active-i-col':active===index}">
+              {{item.msg}}
+            </span>
+          </div>
         </i-col>
         <i-col v-if="userName" span="6" style="text-align:right;font-size:1.1rem">
           <Dropdown @on-click="headerControl" @on-visible-change="dropdown">
-            <img src="../assets/img/mulai.jpg" class="user-img card card-hover" alt="">
+            <img v-if="user.picUrl" :src="user.picUrl" class="user-img card card-hover">
+            <div v-else class="user-img-none card card-hover text-center">
+              音
+            </div>
             <dropdown-menu slot="list" style="text-align:center">
               <dropdown-item name="user" style="line-height:40px">个人中心</dropdown-item>
               <dropdown-item name="UploadMusic" style="line-height:40px">上传音乐</dropdown-item>
@@ -75,31 +87,36 @@
             </dropdown-menu>
           </Dropdown>
         </i-col>
-        <i-col v-else span="6" style="text-align:right;font-size:1.1rem">
-          <a @click="headerControl('login')">登录</a>&nbsp;/&nbsp;<a @click="headerControl('reg')">注册</a>
+        <i-col v-else span="6" style="text-align:right;font-size:1rem">
+          <span @click="$store.commit('showUserBox','login')">
+            登录
+          </span>
+          |
+          <span @click="$store.commit('showUserBox','reg')">
+            注册
+          </span>
         </i-col>
       </i-row>
       <div class="g-down">
         APP
       </div>
     </div>
-    <login-and-reg @control="headerControl" v-if="this.$store.state.user.type==='visitor'&&(showLoginAndReg==='reg'||showLoginAndReg==='login')"
-      :type="showLoginAndReg"></login-and-reg>
+    
   </div>
 </template>
 <script lang="">
-  import LoginAndReg from './LoginAndReg'
   export default {
-    components: {
-      LoginAndReg
-    },
     data() {
       return {
         showLoginAndReg: '',
-        icon: 'arrow-down-b'
+        icon: 'arrow-down-b',
+        // smIcon:['music-note','headphone','chatbubbles','ionic']
       }
     },
     computed: {
+      user() {
+        return this.$store.state.user
+      },
       active() {
         return this.$store.state.router.routerIndex
       },

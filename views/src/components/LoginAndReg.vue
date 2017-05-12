@@ -9,7 +9,7 @@
   left: calc(50% - 400px);
   transform: translateY(-50%);
   background: #fefefe;
-  z-index: 1
+  z-index: 99
 }
 
 .c-img {
@@ -48,9 +48,9 @@
 </style>
 <template lang="">
 <div>
-  <div class="g-user card card3">
-    <div class="c-close">
-      <i-icon @click.native="showControl('close')" type="close-round"></i-icon>
+  <div class="g-user card card3" v-if="show">
+    <div class="c-close cursor">
+      <i-icon @click.native="$store.commit('hideUserBox')" type="close-round"></i-icon>
     </div>
     <img class="c-img" src="../assets/img/reg.jpg" alt="">
     <div class="g-main">
@@ -83,21 +83,29 @@
   import {
   Message
 } from 'iview'
+let md5 = require('js-md5')
 import api from '../axios.js'
 export default {
-  props: ['type'],
+  // props: ['type'],
   data() {
     return {
       phone: '',
       code: '',
       password: '',
       rePsw: '',
+      codeID:'',
 			getCodeLoading:0
     }
   },
   computed: {
     btnText() {
       return this.type == 'reg' ? '加入TIFI' : '进入TIFI'
+    },
+    show(){
+      return this.$store.state.body.userBox.show
+    },
+    type(){
+      return this.$store.state.body.userBox.type
     }
   },
 	watch:{
@@ -115,15 +123,20 @@ export default {
         phone: this.phone,
         code: this.code,
         password: this.password,
-        rePsw: this.rePsw
+        rePsw: this.rePsw,
+        codeID: this.codeID
       }
       if (this.type == 'reg') {
         if (user.phone && user.password && user.rePsw) {
           if (user.password === user.rePsw) {
-            let postback = await api.userReg(user)
-            if (postback.success) {
+            user.password = md5(user.password)
+            let postback = await api.createUser(user)
+            if (postback.code===200) {
               this.password = ''
-              this.showControl('login')
+              this.rePsw = ''
+              this.code = ''
+              this.codeID = ''
+              this.$store.commit('showUserBox','login')
             }
           } else {
             Message.info('两次密码不一致')
@@ -133,21 +146,22 @@ export default {
         }
       } else {
         if (user.phone && user.password) {
-          this.$store.dispatch('login', user)
+          user.password = md5(user.password)
+          this.$store.dispatch('login', user).then(()=>{
+            this.$store.commit('hideUserBox')
+          })
         } else {
           Message.info('手机或密码不能为空')
         }
       }
     },
-    showControl(val) {
-      this.$emit('control', val)
-    },
     async getPhoneCode() {
       if (this.phone) {
         if ((/^1[34578]\d{9}$/.test(this.phone))) {
           let postback = await api.getPhoneCode({phone:this.phone})
-					if(postback.success){
+					if(postback.code===200){
 						this.getCodeLoading = 60
+            this.codeID = postback.codeID
 					}
         }else {
         	Message.error('手机格式错误')

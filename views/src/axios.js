@@ -9,7 +9,7 @@ const instance = axios.create()
 // }else{
 //   instance.baseURL = 'http://localhost:5000'
 // }
-instance.defaults.timeout = 60000
+instance.defaults.timeout = 100000
 instance.defaults.headers.post['Content-Type'] = 'application/json'
 instance.interceptors.request.use(config => {
   if (localStorage.getItem('token')) {
@@ -39,8 +39,32 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-let baseURL = 'http://localhost:5000'
+let baseURL = 'http://192.168.43.217:5000'
 export default {
+  //获取手机验证码
+  getPhoneCode(data){
+    return instance.post(baseURL+'/getPhoneCode', data)
+  },
+  //添加用户
+  createUser(data){
+    return instance.post(baseURL+'/createUser', data)
+  },
+  //登录
+  login(data){
+    return instance.post(baseURL+'/login', data)
+  },
+  //获取我的音乐基本信息
+  retrieveUser(data){
+    return instance.post(baseURL+'/retrieveUser', data)
+  },
+  //获取歌单信息
+  retrievePlaylist(data){
+    return instance.post(baseURL+'/retrievePlaylist', data)
+  },
+  //添加歌曲进歌单
+  addSong(data){
+    return instance.post(baseURL+'/addSong', data)
+  },
   //音频识别
   audioRec(data){
     return instance.post(baseURL+'/api/audioRec', data)

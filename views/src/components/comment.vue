@@ -19,6 +19,14 @@
     border-radius: 50%
   }
 
+  .user-cover-none {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    line-height: 50px;
+    font-size: 20px
+  }
+
 </style>
 <template>
   <div>
@@ -31,7 +39,10 @@
       <i-col span="22" :offset="fixedTalk?'2':'1'" style="padding-top:.5rem">
         <i-row>
           <i-col span="2">
-            <img src="../assets/img/mulai.jpg" class="card user-cover" />
+            <img v-if="user.picUrl" :src="user.picUrl" class="card user-cover" />
+            <div v-else class="card user-cover-none text-center">
+              音
+            </div>
           </i-col>
           <i-col span="22">
             <div>
@@ -42,16 +53,19 @@
         </i-row>
         <br /><br /><br />
         <h2>共{{data.total}}条评论</h2>
-        <br />
-        <h3>
+        <br /><br />
+        <h2>
           热门评论
           <i-icon type="fireball"></i-icon>
-        </h3>
+        </h2>
         <div class="dir"></div>
-        <div v-for="(item,index) in data.hotComments">
+        <div v-for="(item,index) in hot">
           <i-row style="padding:1rem 0">
             <i-col span="2">
-              <img :src="item.user.avatarUrl" class="card user-cover" />
+              <img v-if="item.user.avatarUrl" :src="item.user.avatarUrl" class="card user-cover" />
+              <div v-else class="card user-cover-none text-center">
+                TIFI
+              </div>
             </i-col>
             <i-col span="22">
               <span class="text-link">{{item.user.nickname}}:</span> {{item.content}}
@@ -66,7 +80,7 @@
               <br /><br />
               <i-row>
                 <i-col span="12">
-                  发表于 {{item.time}}
+                  发表于 {{formatTime(item.time)}}
                   <span class="c-btn card" style="padding:.2rem .5rem">回复</span>
                 </i-col>
                 <i-col span="12" class="text-right cursor">
@@ -75,25 +89,35 @@
               </i-row>
             </i-col>
           </i-row>
-          <div v-if="index!==data.hotComments.length-1" class="dir"></div>
+          <div v-if="index!==hot.length-1" class="dir"></div>
         </div>
-        <br />
-        <h3>
+        <br /><br />
+        <h2>
           最新评论
           <i-icon type="flash"></i-icon>
-        </h3>
+        </h2>
         <div class="dir"></div>
         <div v-for="(item,index) in data.comments">
           <i-row style="padding:1rem 0">
             <i-col span="2">
-              <img :src="item.user.avatarUrl" class="card user-cover" />
+              <img v-if="item.user.avatarUrl" :src="item.user.avatarUrl" class="card user-cover" />
+              <div v-else class="card user-cover-none text-center">
+                TIFI
+              </div>
             </i-col>
             <i-col span="22">
               <span class="text-link">{{item.user.nickname}}:</span> {{item.content}}
+              <div v-if="item.beReplied">
+                <br/>
+                <div v-for="re in item.beReplied" style="border:1px solid #ccc;padding:.5rem">
+                  <span class="text-link">{{re.user.nickname}}:</span> {{re.content}}
+                  <br/>
+                </div>
+              </div>
               <br /><br />
               <i-row>
                 <i-col span="12">
-                  发表于 {{item.time}}
+                  发表于 {{formatTime(item.time)}}
                   <span class="c-btn card" style="padding:.2rem .5rem">回复</span>
                 </i-col>
                 <i-col span="12" class="text-right cursor">
@@ -105,7 +129,7 @@
           <div v-if="index!==data.comments.length-1" class="dir"></div>
         </div>
         <br />
-        <mu-pagination :total="data.total" :current="1" @pageChange="pageChange">
+        <mu-pagination :total="data.total" :current="currPage" @pageChange="pageChange">
         </mu-pagination>
       </i-col>
     </i-row>
@@ -114,6 +138,8 @@
 </template>
 <script>
   import wyApi from '../wyApi.js'
+  import moment from 'moment'
+  moment.locale('zh-cn')
   export default {
     props: {
       data: {
@@ -123,42 +149,54 @@
             total: 2,
             comments: [{
               beReplied: [{
-                content: '不错哦',
+                content: '可以的',
                 user: {
-                  avatarUrl: "http://p1.music.126.net/BKAR7WwpjP_4g4yIdeNRXA==/3413983609951723.jpg",
-                  nickname: '回复测试'
+                  avatarUrl: "",
+                  nickname: '官方回复'
                 }
               }],
-              likedCount: 999,
-              time: 1487684420785,
-              content: '一入古风深似海 风吹石岛 我无法说出内心的爱 大海的远和一个人的苍茫 我只能遥望 在潮起潮落中 黎明近在眼前',
+              likedCount: 0,
+              time: Date.parse(new Date()),
+              content: '这是您在TIFI创建的歌单,希望您能寻得知心的音乐',
               user: {
-                avatarUrl: "http://p1.music.126.net/BKAR7WwpjP_4g4yIdeNRXA==/3413983609951723.jpg",
-                nickname: '测试评论'
-              }
-            }],
-            hotComments: [{
-              beReplied: [{
-                content: '不错哦',
-                user: {
-                  nickname: '回复测试'
-                }
-              }],
-              likedCount: 999,
-              time: 1487684420785,
-              content: '一入古风深似海 风吹石岛 我无法说出内心的爱 大海的远和一个人的苍茫 我只能遥望 在潮起潮落中 黎明近在眼前',
-              user: {
-                avatarUrl: "http://p1.music.126.net/BKAR7WwpjP_4g4yIdeNRXA==/3413983609951723.jpg",
-                nickname: '测试评论'
+                avatarUrl: "",
+                nickname: '官方评论'
               }
             }]
           }
+        }
+      },
+      hot: {
+        type: Array,
+        default () {
+          return [{
+            beReplied: [{
+              content: '可以的',
+              user: {
+                nickname: '官方回复',
+                avatarUrl: ""
+              }
+            }],
+            likedCount: 0,
+            time: Date.parse(new Date()),
+            content: '这是您在TIFI创建的歌单,希望您能寻得知心的音乐',
+            user: {
+              avatarUrl: "",
+              nickname: '官方评论'
+            }
+          }]
         }
       }
     },
     data() {
       return {
         fixedTalk: false,
+        currPage: 1
+      }
+    },
+    computed: {
+      user() {
+        return this.$store.state.user
       }
     },
     methods: {
@@ -172,11 +210,14 @@
         this.fixedTalk = val
       },
       pageChange(val) {
-        this.$emit('pageChange',val)
+        this.$emit('pageChange', val)
+        this.currPage = val
+      },
+      formatTime(val) {
+        return moment(val).format('MMMDo YYYY hh:mm a')
       }
     },
-    mounted() {
-    }
+    mounted() {}
   }
 
 </script>

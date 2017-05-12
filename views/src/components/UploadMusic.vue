@@ -647,11 +647,11 @@
         }
       },
       createArtist() {
-        this.artists.forEach(function (item) {
-          wyApi.getArtistDesc(item.wyID).then((data)=>{
-            item.introduction = data.introduction
-          })
-        })
+        // this.artists.forEach(function (item) {
+        //   wyApi.getArtistDesc(item.wyID).then((data)=>{
+        //     item.introduction = data.introduction
+        //   })
+        // })
         api.createArtist({artists:this.artists})
       },
       async retrieveArtist() {

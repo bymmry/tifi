@@ -5,6 +5,15 @@
     border-radius: 50%;
     margin: 0 auto
   }
+  .user-img-none {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    line-height: 150px;
+    font-size: 50px;
+    font-weight: 300;
+    margin: 0 auto
+  }
 
   .playlist-detail {
     line-height: 35px
@@ -67,9 +76,13 @@
     <i-row>
       <i-col span="5">
         <div style="width:150px" class="text-center">
-          <img src="../assets/img/mulai.jpg" class="user-img" />
+          
+          <img v-if="user.picUrl" :src="user.picUrl" class="user-img card" />
+          <div v-else class="user-img-none card">
+            音
+          </div>
           <br /><br />
-          <h3>多部未华子的眼睛</h3>
+          <h3>{{user.name}}</h3>
           <tooltip trigger="hover" content="您还没填写地区哦">
             <small style="color:#bbb">来自&nbsp;&nbsp;火星</small>
           </tooltip>
@@ -206,6 +219,11 @@
       return {
         moreSong: false,
         morePlaylist: false
+      }
+    },
+    computed: {
+      user(){
+        return this.$store.state.user
       }
     }
   }
