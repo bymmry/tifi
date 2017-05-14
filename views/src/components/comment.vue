@@ -129,7 +129,7 @@
           <div v-if="index!==data.comments.length-1" class="dir"></div>
         </div>
         <br />
-        <mu-pagination :total="data.total" :current="currPage" @pageChange="pageChange">
+        <mu-pagination style="justify-content: center" :total="data.total" :current="currPage" @pageChange="pageChange">
         </mu-pagination>
       </i-col>
     </i-row>

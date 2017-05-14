@@ -3,9 +3,9 @@ import axios from 'axios'
 //Message
 //} from 'iview'
 const instance = axios.create();
-if (process.SERVER_BUILD) {
-  instance.baseURL = 'http://localhost:3000'
-}
+// if (process.SERVER_BUILD) {
+//   instance.baseURL = 'http://localhost:3000'
+// }
 // instance.defaults.timeout = 5000
 instance.defaults.headers.post['Content-Type'] = 'application/json'
 
@@ -16,7 +16,7 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-let baseURL = 'http://192.168.43.217:3000'
+let baseURL = 'http://www.tifi.me:3000'
 export default {
   //使用网易云的搜索
   search(data,type,offset){

@@ -17,6 +17,7 @@ import modal from 'iview/src/components/modal'
 import circle from 'iview/src/components/circle'
 import page from 'iview/src/components/page'
 import Carousel from 'iview/src/components/carousel'
+import spin from 'iview/src/components/spin'
 
 Vue.component('iRow', Row)
 Vue.component('iCol', Col)
@@ -32,6 +33,7 @@ Vue.component('iCircle', circle)
 Vue.component('page', page)
 Vue.component('carousel', Carousel)
 Vue.component('carouselItem', Carousel.Item)
+Vue.component('spin', spin)
 
 
 import slider from 'muse-components/slider'

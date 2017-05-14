@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <transition name="fade" mode="out-in">
-      <keep-alive>
-        <router-view ></router-view>
-        <!--<mu-circular-progress style="margin: 60% 45%" v-else :size="40"/>-->
-      </keep-alive>
-    </transition>
+    <my-header></my-header>
+    <keep-alive>
+      <transition name="fade" mode="out-in">
+        <router-view class="continer"></router-view>
+      </transition>
+    </keep-alive>
     <transition name="fade" mode="out-in">
       <play v-if="musicBox.playBox"></play>
     </transition>
@@ -14,11 +14,13 @@
 </template>
 
 <script>
+  import myHeader from './components/Header.vue'
   import play from './components/Play.vue'
   import musicBox from './components/MusicBox.vue'
   export default {
     name: 'app',
     components: {
+      myHeader,
       play,
       musicBox
     },
@@ -38,6 +40,14 @@
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     margin-top: 5px;
+  }
+
+  .continer {
+    margin-top: 104px;
+    padding-bottom: 50px;
+    height: calc(100vh - 104px);
+    overflow-y: auto;
+    overflow-x: hidden
   }
 
   .fade-enter-active .fade-leave-active {

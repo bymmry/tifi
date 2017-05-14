@@ -158,7 +158,6 @@
         <comment v-if="commentShow" @pageChange="pageChange" :data="commentData" :hot="hotComment"></comment>
       </i-col>
     </i-row>
-    <div style="height:50px"></div>
   </div>
 </template>
 <script>

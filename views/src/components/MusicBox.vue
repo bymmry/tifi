@@ -43,7 +43,7 @@
           <i-icon type="ios-skipbackward"></i-icon>
           <i-icon class="cursor" style="margin:0 1rem;" @click.native="playToggle" :type="onPlay?'pause':'play'"></i-icon>
           <i-icon type="ios-skipforward"></i-icon>
-          <div @click="$store.commit('routerActive', 'other');$router.push('/play')" class="cover" :style="{'background-image':'URL('+musicData.album.picUrl+')'}">
+          <div @click="$store.commit('router', '/play')" class="cover" :style="{'background-image':'URL('+musicData.album.picUrl+')'}">
           </div>
         </i-col>
         <i-col span="15">

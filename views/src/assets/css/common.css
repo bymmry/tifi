@@ -9,13 +9,12 @@ background-attachment:fixed;
 background-size: cover;*/
 }
 
-
 ::-webkit-scrollbar {
   border-radius: 5px;
-	 width: 5px;
-   height: 5px;
-   position: absolute;
-   left: 0
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  left: 0
 }
 
 ::-webkit-scrollbar-track {
@@ -76,13 +75,15 @@ background-size: cover;*/
   width: 100%;
   margin: .5rem 0
 }
+
 .wdir {
   border: 0;
   height: 0.5px;
   margin: .5rem 0;
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));
 }
-.mdir{
+
+.mdir {
   background: #f0f0f0;
   height: .5px;
   width: 100%;
@@ -165,12 +166,12 @@ button {
   outline: none
 }
 
-.c-circle{
+.c-circle {
   background: #41464b;
   color: #fff;
   cursor: pointer;
   width: 40px;
-  height:40px;
+  height: 40px;
   line-height: 40px;
   text-align: center;
   font-size: 20px;
@@ -206,8 +207,8 @@ button {
   cursor: pointer;
 }
 
-.card-file{
-  width:150px;
+.card-file {
+  width: 150px;
   height: 150px;
   line-height: 150px;
   position: relative;
@@ -216,9 +217,9 @@ button {
   color: #000;
   cursor: pointer;
   text-align: center;
-  
 }
-.card-file input{
+
+.card-file input {
   cursor: pointer;
   position: absolute;
   width: 100%;
@@ -232,7 +233,6 @@ button {
 .btn {
   background: #41464b;
   color: #fff;
-  
 }
 
 .c-btn {
@@ -246,6 +246,12 @@ button {
 .btn:hover {
   background: #616161;
   color: #fff
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
 }
 
 

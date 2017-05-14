@@ -67,11 +67,14 @@
       </div>
       <i-row>
         <i-col :span="18" :style="{'text-align':'left'}">
-          <div style="float:left;padding-right:2rem" @click="routerControl(index)" v-for="(item,index) in this.$store.state.router.router"
+          <div v-if="index<4" style="float:left;padding-right:3rem" @click="routerControl(item.path)" v-for="(item,index) in this.$store.state.router.router"
             :class="{'text-hover':active!==index,'text-center':index!==0}">
             <span :class="{'active-i-col':active===index}">
-              {{item.msg}}
+              {{item.name}}
             </span>
+          </div>
+          <div v-if="active!=4 && active!=0" style="float:left;padding-right:3rem">
+            <i-icon type="ios-search-strong" @click.native="$store.commit('router', '/search')"></i-icon>
           </div>
         </i-col>
         <i-col v-if="userName" span="6" style="text-align:right;font-size:1.1rem">
@@ -82,8 +85,8 @@
             </div>
             <dropdown-menu slot="list" style="text-align:center">
               <dropdown-item name="user" style="line-height:40px">个人中心</dropdown-item>
-              <dropdown-item name="UploadMusic" style="line-height:40px">上传音乐</dropdown-item>
-              <dropdown-item name="logOut" style="line-height:40px">退出登陆</dropdown-item>
+              <dropdown-item name="upload" style="line-height:40px">上传音乐</dropdown-item>
+              <dropdown-item name="logout" style="line-height:40px">退出登陆</dropdown-item>
             </dropdown-menu>
           </Dropdown>
         </i-col>
@@ -91,7 +94,7 @@
           <span @click="$store.commit('showUserBox','login')">
             登录
           </span>
-          |
+          <span style="font-size:14px">&nbsp;|&nbsp;</span>
           <span @click="$store.commit('showUserBox','reg')">
             注册
           </span>
@@ -128,21 +131,20 @@
       dropdown(val) {
         this.icon = val ? 'arrow-up-b' : 'arrow-down-b'
       },
-      routerControl(index) {
-        this.showLoginAndReg = index
-        this.$store.commit('routerActive', index)
+      routerControl(path) {
+        this.showLoginAndReg = path
+        this.$store.commit('router', path)
       },
       headerControl(val) {
         this.showLoginAndReg = val
-        if (val === 'logOut') {
+        if (val === 'logout') {
           this.$store.commit('logout')
         }
-        if (val == 'UploadMusic') {
-          this.$router.push('/UploadMusic')
+        if (val == 'upload') {
+          this.$store.commit('router', '/upload')
         }
         if (val == 'user') {
-          this.$store.commit('routerActive', 'other')
-          this.$router.push('/user')
+          this.$store.commit('router', '/user')
         }
       }
     }

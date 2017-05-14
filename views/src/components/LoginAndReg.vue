@@ -102,10 +102,10 @@ export default {
       return this.type == 'reg' ? '加入TIFI' : '进入TIFI'
     },
     show(){
-      return this.$store.state.body.userBox.show
+      return this.$store.state.user.userBox.show
     },
     type(){
-      return this.$store.state.body.userBox.type
+      return this.$store.state.user.userBox.type
     }
   },
 	watch:{
@@ -147,9 +147,7 @@ export default {
       } else {
         if (user.phone && user.password) {
           user.password = md5(user.password)
-          this.$store.dispatch('login', user).then(()=>{
-            this.$store.commit('hideUserBox')
-          })
+          this.$store.dispatch('login', user)
         } else {
           Message.info('手机或密码不能为空')
         }

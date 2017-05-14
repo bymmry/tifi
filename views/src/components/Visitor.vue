@@ -16,7 +16,7 @@
         </div>
       </i-col>
       <i-col :span="1" style="font-size:18px">
-        <div class="text-link" style="width:20px">立即尝试</div>
+        <div @click="$store.commit('showUserBox','login')" class="text-link" style="width:20px">立即尝试</div>
       </i-col>
       <i-col :span="3" offset="14" class="text-center" style="font-size:16px">
         <div class="dir" style="margin-top:0;margin-bottom:1.2rem">

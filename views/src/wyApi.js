@@ -3,9 +3,9 @@ import {
   Message
 } from 'iview'
 const instance = axios.create();
-if (process.SERVER_BUILD) {
-  instance.baseURL = 'http://localhost:3000'
-}
+// if (process.SERVER_BUILD) {
+//   instance.baseURL = 'http://localhost:3000'
+// }
 // instance.defaults.timeout = 5000
 instance.defaults.headers.post['Content-Type'] = 'application/json'
 
@@ -15,39 +15,59 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-let baseURL = 'http://192.168.43.217:3000'
+let baseURL = 'http://www.tifi.me:3000'
 export default {
   //使用网易云的搜索
-  search(data,type,offset=0){
-    return instance.get(baseURL+'/search?limit=20&type='+type+'&offset='+offset+'&keywords='+data)
+  search(data, type, offset = 0, limit=10) {
+    return instance.get(baseURL + '/search?limit='+limit+'&type=' + type + '&offset=' + offset + '&keywords=' + data)
   },
   //获取歌曲的歌词
-  getLyric(id){
-    return instance.get(baseURL+'/lyric?id='+id)
+  getLyric(id) {
+    return instance.get(baseURL + '/lyric?id=' + id)
   },
   //获取歌曲评论
-  getComment(id,offset=0){
-    return instance.get(baseURL+'/comment/music?limit=10&offset='+offset+'&id='+id)
+  getComment(id, offset = 0) {
+    return instance.get(baseURL + '/comment/music?limit=10&offset=' + offset + '&id=' + id)
+  },
+  //获取歌单评论
+  getPlaylistComment(id, offset = 0) {
+    return instance.get(baseURL + '/comment/playlist?limit=10&offset=' + offset + '&id=' + id)
   },
   //获取歌手的专辑
-  getAlbum(id){
-    return instance.get(baseURL+'/artist/album?limit=100&id='+id)
+  getAlbum(id) {
+    return instance.get(baseURL + '/artist/album?limit=100&id=' + id)
   },
   //获取专辑歌曲
-  getSong(id){
-    return instance.get(baseURL+'/album?id='+id)
+  getSong(id) {
+    return instance.get(baseURL + '/album?id=' + id)
+  },
+  //获取歌手单曲
+  getArtistSong(id) {
+    return instance.get(baseURL + '/artists?id=' + id)
+  },
+  //获取歌手专辑
+  getArtistAlbum(id, limit = 50) {
+    return instance.get(baseURL + '/artist/album?id=' + id + '&limit=' + limit)
   },
   //获取歌手描述
-  getArtistDesc(id){
-    return instance.get(baseURL+'/artist/desc?id='+id)
+  getArtistDesc(id) {
+    return instance.get(baseURL + '/artist/desc?id=' + id)
   },
   //获取热门歌单
-  getHotPlaylist(limit){
-    return instance.get(baseURL+'/top/playlist/highquality?limit='+limit)
+  getHotPlaylist(limit = 8) {
+    return instance.get(baseURL + '/top/playlist/highquality?limit=' + limit)
+  },
+  //获取精选歌单
+  getHightPlaylist(limit = 8) {
+    return instance.get(baseURL + '/top/playlist?limit=' + limit + '&order=new')
+  },
+  //获取热门歌手
+  getHotArtist(limit = 8) {
+    return instance.get(baseURL + '/top/artists?limit=' + limit)
   },
   //获取新碟上架信息
-  getNewAlbum(limit){
-    return instance.get(baseURL+'/top/album?offset=0&limit='+limit)
+  getNewAlbum(limit) {
+    return instance.get(baseURL + '/top/album?offset=0&limit=' + limit)
   },
   //获取各种榜单
   // "0": 云音乐新歌榜,   
@@ -72,8 +92,43 @@ export default {
   // "19": 法国 NRJ EuroHot 30周榜,  
   // "20": 台湾Hito排行榜,  
   // "21": Beatport全球电子舞曲榜
-  getToplist(type=0){
-    return instance.get(baseURL+'/top/list?idx='+type)
-  }
-  
+  getToplist(type = 0) {
+    return instance.get(baseURL + '/top/list?idx=' + type)
+  },
+  //获取歌单详情
+  getPlaylistDetail(id) {
+    return instance.get(baseURL + '/playlist/detail?id=' + id)
+  },
+  //获取音乐url
+  getMusicUrl(id) {
+    return instance.get(baseURL + '/music/url?id=' + id)
+  },
+  //获取推荐mv
+  getRecommendMv() {
+    return instance.get(baseURL + '/personalized/mv')
+  },
+  //最新mv
+  getNewMv(limit = 10, offset = 0) {
+    return instance.get(baseURL + '/mv/first?limit=' + limit + '&ffset=' + offset)
+  },
+  //mv排行榜
+  getTopMv(limit = 10, offset = 0) {
+    return instance.get(baseURL + '/top/mv?limit=' + limit + '&ffset=' + offset)
+  },
+  //获取mv详情
+  getMvInfo(id) {
+    return instance.get(baseURL + '/mv?mvid=' + id)
+  },
+  //获取mv评论
+  getMvComment(id, offset) {
+    return instance.get(baseURL + '/comment/mv?id=' + id + '&limit=10&offset=' + offset)
+  },
+  //获取专辑详情
+  getAlbumInfo(id) {
+    return instance.get(baseURL + '/album?id=' + id)
+  },
+  //获取专辑评论
+  getAlbumComment(id, offset = 0) {
+    return instance.get(baseURL + '/comment/album?id=' + id + '&limit=10&offset=' + offset)
+  },
 }

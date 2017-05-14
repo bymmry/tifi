@@ -9,8 +9,12 @@
     <transition name="fade" mode="out-in">
       <router-view class="container" v-if="$route.meta.notKeepAlive"></router-view>
     </transition>
-    <music-box v-if="this.$store.state.musicBox.musicData"></music-box>
-    <login-and-reg></login-and-reg>
+    <transition name="fade" mode="out-in">
+      <music-box v-if="this.$store.state.musicBox.musicData"></music-box>
+    </transition>
+    <transition name="fade" mode="out-in">
+      <login-and-reg></login-and-reg>
+    </transition>
   </div>
 </template>
 
@@ -40,13 +44,17 @@
           this.$store.commit('logout')
         }
       }
-      if (sessionStorage.getItem('routerIndex')) {
-        this.$store.commit('routerActive', Number(sessionStorage.getItem('routerIndex')))
-      }
       if (localStorage.getItem('musicData')) {
         let musicData = JSON.parse(localStorage.getItem('musicData'))
         musicData.local = true
         this.$store.commit('playMuisc', musicData)
+      }
+      if (sessionStorage.getItem('router')) {
+        if (sessionStorage.getItem('router') == '/play') {
+          this.$store.commit('router', '/recommend')
+        } else {
+          this.$store.commit('router', sessionStorage.getItem('router'))
+        }
       }
       // if(document.documentElement.clientWidth<=1024){
       //   this.$store.commit('setSm',true)
@@ -62,7 +70,7 @@
   .container {
     margin: 0 auto;
     width: 1000px;
-    height: 100vh;
+    padding-bottom: 50px
   }
 
   a {

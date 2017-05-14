@@ -4,9 +4,22 @@ const state = {
   name: '',
   picUrl: '',
   type: 'visitor',
-  playlist: []
+  playlist: [],
+  userBox: {
+    show: false,
+    type: 'login'
+  }
 }
 const mutations = {
+  hideUserBox(state){
+    state.userBox.show=false
+  },
+  showUserBox(state, val) {
+    state.userBox = {
+      show: true,
+      type: val
+    }
+  },
   login(state, payload) {
     if (localStorage.getItem('uid')) {
       state.uid = localStorage.getItem('uid')
@@ -29,6 +42,7 @@ const mutations = {
         state.picUrl = payload.picUrl
         state.playlist = payload.playlist
         state.type = 'member'
+        state.userBox.show = false
       }
     }
   },
@@ -55,7 +69,10 @@ const actions = {
     commit
   }, payload) {
     return api.login(payload).then((data) => {
-      commit('login', data)
+      if(data.code==200){
+        commit('login', data)
+      }
+      
     })
   },
   addSong({

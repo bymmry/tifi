@@ -8,7 +8,6 @@
     padding: .5rem;
     width: 100%
   }
-
   /*.sm-searchBtn {
     text-align: center;
     cursor: pointer;
@@ -69,20 +68,11 @@
           </i-col>
         </i-row>
         <div style="margin-bottom:3rem">
-          <i-row :gutter="32" style="margin-bottom:2rem">
-            <i-col span="6" v-if="index<4" :key="index" v-for="(item,index) in hotPlaylist">
-              <div class="min-card card-hover cover" style="height:150px;background:#f0f0f0">
-                <img class="card" v-if="item.coverImgUrl" :src="item.coverImgUrl" style="height:150px;width:100%" alt="">
-              </div>
-              <div style="margin-top:.5rem">
-                {{item.name}}
-              </div>
-            </i-col>
-          </i-row>
-          <i-row :gutter="32" style="margin-bottom:2rem">
-            <i-col span="6" v-if="index>=4" :key="index" v-for="(item,index) in hotPlaylist">
-              <div class="min-card card-hover cover" style="height:150px;background:#f0f0f0">
-                <img class="card" v-if="item.coverImgUrl" :src="item.coverImgUrl" style="height:150px;width:100%" alt="">
+          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+            <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hotPlaylist">
+              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
+                <img @click="$store.commit('router',{id:item.id,path:'/playlist'})" class="card" v-if="item.coverImgUrl" :src="item.coverImgUrl"
+                  style="height:150px;width:100%" alt="">
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}}
@@ -92,7 +82,7 @@
         </div>
         <i-row style="line-height:2rem;margin-bottom:2rem">
           <i-col span="4" style="text-align:left">
-            <h1>新碟上线</h1>
+            <h1>精选歌单</h1>
           </i-col>
           <i-col span="18">
             <span v-for="(item,index) in hotPlayListTag" style="cursor:pointer;padding-left:0.7rem">
@@ -104,32 +94,43 @@
             <a>更多</a>
           </i-col>
         </i-row>
-        <div>
-          <i-row :gutter="32" style="margin-bottom:1rem">
-            <i-col span="6" v-if="index<4" :key="index" v-for="(item,index) in newAlbum">
-              <div class="min-card card-hover" style="height:150px;background:#f0f0f0">
-                <img class="card" v-if="item.picUrl" :src="item.picUrl" style="height:150px;width:100%" alt="">
+        <div style="margin-bottom:3rem">
+          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+            <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hightPlaylist">
+              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
+                <img @click="$store.commit('router',{id:item.id,path:'/playlist'})" class="card" v-if="item.coverImgUrl" :src="item.coverImgUrl"
+                  style="height:150px;width:100%" alt="">
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}}
-              </div>
-              <div style="font-size:10px;color:#bbb">
-                {{item.artist.name}}
               </div>
             </i-col>
           </i-row>
-          <i-row :gutter="32" style="margin-bottom:2rem">
-            <i-col span="6" v-if="index>=4" :key="index" v-for="(item,index) in newAlbum">
-              <div class="min-card card-hover" style="height:150px;background:#f0f0f0">
-                <img class="card" v-if="item.picUrl" :src="item.picUrl" style="height:150px;width:100%" alt="">
+        </div>
+        <i-row style="line-height:2rem;margin-bottom:2rem">
+          <i-col span="4" style="text-align:left">
+            <h1>热门歌手</h1>
+          </i-col>
+          <i-col span="18">
+            <span v-for="(item,index) in hotPlayListTag" style="cursor:pointer;padding-left:0.7rem">
+              <span class="text-hover">{{item}}</span>
+            <span v-if="index!=hotPlayListTag.length-1" style="padding-left:0.7rem">|</span>
+            </span>
+          </i-col>
+          <i-col span="2" style="text-align:right">
+            <a>更多</a>
+          </i-col>
+        </i-row>
+        <div style="margin-bottom:3rem">
+          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+            <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hotArtist">
+              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
+                <img @click="$store.commit('router',{id:item.id,path:'/artist'})" class="card" v-if="item.img1v1Url" :src="item.img1v1Url"
+                  style="height:150px;width:100%" alt="">
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}}
               </div>
-              <div style="font-size:10px;color:#bbb">
-                {{item.artist.name}}
-              </div>
-              <br/>
             </i-col>
           </i-row>
         </div>
@@ -137,7 +138,7 @@
       <i-col span="6">
         <i-row>
           <i-col span="24">
-            <button @click="$store.commit('routerActive', 'other');$router.push('/search')" class="btn card searchBtn">
+            <button @click="$store.commit('router', '/search')" class="btn card searchBtn">
               <i-icon type="search"></i-icon>&nbsp;&nbsp;今天也来点小曲
             </button>
           </i-col>
@@ -171,11 +172,34 @@
           </i-col>
         </i-row>
         <i-row v-for="(item,index) in toplist" :key="index" style="margin-bottom:1rem">
-          <i-col span="24">
+          <i-col span="22">
             <div class="">
               <i-icon style="cursor:pointer" type="play" @click.native="wyPlayMusic(item)"></i-icon>
               &nbsp;&nbsp;{{item.name}} - {{item.artists[0].name}}
             </div>
+          </i-col>
+          <i-col span="2">
+            <mu-badge :content="index+1+''" color="#41464b" />
+          </i-col>
+        </i-row>
+        <br/><br/>
+        <i-row style="margin-bottom:2rem">
+          <i-col span="12">
+            <h3>KTV榜</h3>
+          </i-col>
+          <i-col span="12" style="text-align:right">
+            <a>Top 100</a>
+          </i-col>
+        </i-row>
+        <i-row v-for="(item,index) in ktvTop" :key="index" style="margin-bottom:1rem">
+          <i-col span="22">
+            <div class="">
+              <i-icon style="cursor:pointer" type="play" @click.native="wyPlayMusic(item)"></i-icon>
+              &nbsp;&nbsp;{{item.name}} - {{item.artists[0].name}}
+            </div>
+          </i-col>
+          <i-col span="2">
+            <mu-badge :content="index+1+''" color="#41464b" />
           </i-col>
         </i-row>
       </i-col>
@@ -192,9 +216,11 @@
         msg: 'TIFI MUSIC - 大道至简 悟在天成',
         hotPlayListTag: ['华语', '流行', '老歌', '粤语', '英文', '摇滚', '民谣'],
         hotPlaylist: [],
-        newAlbum: [],
+        hightPlaylist: [],
+        hotArtist: [],
         playTop: [],
         toplist: [],
+        ktvTop:[],
         carImg: 0
       }
     },
@@ -237,9 +263,17 @@
           this.hotPlaylist = data.playlists
         }
       }).then(() => {
-        wyApi.getNewAlbum(8).then((data) => {
+        wyApi.getHightPlaylist(8).then((data) => {
           if (data.code == 200) {
-            this.newAlbum = data.albums
+            // console.log(data)
+            this.hightPlaylist = data.playlists
+          }
+        })
+      }).then(() => {
+        wyApi.getHotArtist(8).then((data) => {
+          if (data.code == 200) {
+            console.log(data)
+            this.hotArtist = data.artists
           }
         })
       }).then(() => {
@@ -256,7 +290,16 @@
                 this.toplist.push(item)
               }
             })
-            console.log(this.toplist)
+          }
+        })
+      }).then(() => {
+        wyApi.getToplist(7).then((data) => {
+          if (data.code === 200) {
+            data.result.tracks.forEach((item, index) => {
+              if (index < 10) {
+                this.ktvTop.push(item)
+              }
+            })
           }
         })
       })
