@@ -73,8 +73,7 @@
             <i-icon v-if="like" style="color:red" type="android-favorite"></i-icon>
             <tooltip v-else trigger="hover" content="收藏该歌单">
               <i-icon class="cursor" @click.native="likeControl" type="android-favorite-outline"></i-icon>
-            </tooltip>
-            
+            </tooltip>     
           </i-col>
           <i-col span="2" style="font-size:1.2rem" class="cursor">
             <tooltip trigger="hover" content="播放该歌单">
@@ -180,6 +179,7 @@
               <i-icon @click.native="playMusic(song)" class="cursor" type="play"></i-icon>
             </i-col>
             <i-col span="9">
+             
               {{song.music.name}}
             </i-col>
             <i-col span="4">
@@ -252,12 +252,22 @@
         return moment(val).format('YYYY年')
       },
       playMusic(item) {
-        this.$store.commit('playMuisc', {
-          url: 'http://localhost:5000' + item.music.url,
+        this.$store.commit('playMusic', {
+          url: item.url,
           artist: item.artist,
           album: item.album,
           music: item.music
         })
+      },
+      likeSong(item) {
+        if (this.$store.state.user.type == 'member') {
+          this.$store.dispatch('likeSong', {
+            pid: this.$store.state.user.likelistID,
+            song: item
+          })
+        } else {
+          Message.info('您还没有登录')
+        }
       }
     }
   }

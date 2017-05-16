@@ -6,12 +6,16 @@ Vue.use(Vuex)
 // import user from './modules/user'
 // import progress from './modules/progress'
 import musicBox from './modules/musicBox'
+import info from './modules/info'
+import search from './modules/search'
 export default new Vuex.Store({
   modules: {
     // body,
     // router,
     // user,
     // progress,
-    musicBox
+    info,
+    musicBox,
+    search
   }
 })

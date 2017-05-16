@@ -319,7 +319,7 @@
             url: item.mp3Url
           }
         }
-        this.$store.commit('playMuisc', musicData)
+        this.$store.commit('playMusic', musicData)
       },
       formatTime(val) {
         return moment(val).format('YYYY 年')

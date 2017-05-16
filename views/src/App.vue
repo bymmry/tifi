@@ -44,10 +44,14 @@
           this.$store.commit('logout')
         }
       }
+      if (localStorage.getItem('playlist')) {
+        let playlist = JSON.parse(localStorage.getItem('playlist'))
+        this.$store.commit('loadPlaylist', playlist)
+      }
       if (localStorage.getItem('musicData')) {
         let musicData = JSON.parse(localStorage.getItem('musicData'))
         musicData.local = true
-        this.$store.commit('playMuisc', musicData)
+        this.$store.commit('playMusic', musicData)
       }
       if (sessionStorage.getItem('router')) {
         if (sessionStorage.getItem('router') == '/play') {

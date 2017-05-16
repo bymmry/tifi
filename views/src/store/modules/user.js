@@ -4,7 +4,8 @@ const state = {
   name: '',
   picUrl: '',
   type: 'visitor',
-  playlist: [],
+  likelistID:'',
+  likelist: [],
   userBox: {
     show: false,
     type: 'login'
@@ -26,8 +27,9 @@ const mutations = {
       state.name = localStorage.getItem('userName')
       state.picUrl = localStorage.getItem('picUrl')
       state.type = localStorage.getItem('userType')
-      state.playlist = JSON.parse(localStorage.getItem('playlist'))
-      // console.log(state.playlist)
+      state.likelist = JSON.parse(localStorage.getItem('likelist'))
+      state.likelistID = localStorage.getItem('likelistID')
+      // console.log(state.likelist)
     } else {
       if (payload.code === 200) {
         localStorage.setItem('uid', payload.uid)
@@ -35,12 +37,15 @@ const mutations = {
         localStorage.setItem('userPicUrl', payload.picUrl)
         localStorage.setItem('userType', 'member')
         localStorage.setItem('loginTime', payload.loginTime)
-        localStorage.setItem('playlist', JSON.stringify(payload.playlist))
-        // console.log(state.playlist)
+        localStorage.setItem('likelist', JSON.stringify(payload.likelist))
+        localStorage.setItem('likelistID', payload.likelistID)
         state.uid = payload.uid
         state.name = payload.name
         state.picUrl = payload.picUrl
-        state.playlist = payload.playlist
+        state.likelist = payload.likelist
+        state.likelistID = payload.likelistID
+        console.log(state.likelistID)
+        console.log(state.likelist)
         state.type = 'member'
         state.userBox.show = false
       }
@@ -52,16 +57,18 @@ const mutations = {
     localStorage.removeItem('userType')
     localStorage.removeItem('userPicUrl')
     localStorage.removeItem('loginTime')
-    localStorage.removeItem('playlist')
+    localStorage.removeItem('likelist')
+    localStorage.removeItem('likelistID')
     state.uid = ''
     state.name = ''
     state.picUrl = ''
-    state.playlist = []
+    state.likelistID = ''
+    state.likelist = []
     state.type = 'visitor'
   },
-  addSong(state,payload){
-    localStorage.setItem('playlist', JSON.stringify(payload.playlist))
-    state.playlist = payload.playlist
+  likeSong(state,payload){
+    localStorage.setItem('likelist', JSON.stringify(payload.likelist))
+    state.likelist = payload.likelist
   }
 }
 const actions = {
@@ -72,14 +79,14 @@ const actions = {
       if(data.code==200){
         commit('login', data)
       }
-      
     })
   },
-  addSong({
+  likeSong({
     commit
   }, payload){
-    return api.addSong(payload).then((data) => {
-      commit('addSong', data)
+    console.log('payload',payload)
+    return api.addSongToPlaylist(payload).then((data) => {
+      commit('likeSong', data)
     })
   }
 }

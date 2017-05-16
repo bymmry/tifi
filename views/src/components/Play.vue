@@ -33,7 +33,7 @@
 </style>
 <template>
   <div>
-    <i-row >
+    <i-row>
       <div style="position:fixed;z-index:-1;opacity:0">{{wyID}}</div>
       <i-col span="7" class="text-left">
         <affix @on-change="fixedPlayLeft">
@@ -85,8 +85,9 @@
           <i-col span="18">
             <h2>
               {{musicData.music.name}} &nbsp;
-              <tooltip trigger="hover" content="我喜欢">
-                <i-icon class="cursor" type="android-favorite-outline"></i-icon>
+              <i-icon v-if="likeFlag" style="color:red" type="android-favorite"></i-icon>
+              <tooltip v-else trigger="hover" content="我喜欢">
+                <i-icon type="android-favorite-outline" @click.native="likeSong(musicData)" class="cursor"></i-icon>
               </tooltip>
             </h2>
           </i-col>
@@ -192,6 +193,20 @@
       }
     },
     computed: {
+      likeFlag() {
+        let result = false
+        if (this.$store.state.user.type == 'member') {
+          let song = this.$store.state.user.likelist
+          if (song.length > 0) {
+            song.forEach((item) => {
+              if (item.url == this.$store.state.musicBox.musicData.url) {
+                result = true
+              }
+            })
+          }
+        }
+        return result
+      },
       musicData() {
         this.imgPause['background-image'] = 'URL(' + this.$store.state.musicBox.musicData.album.picUrl + ')'
         this.imgPlay['background-image'] = 'URL(' + this.$store.state.musicBox.musicData.album.picUrl + ')'
@@ -257,6 +272,16 @@
       }
     },
     methods: {
+      likeSong(item) {
+        if (this.$store.state.user.type == 'member') {
+          this.$store.dispatch('likeSong', {
+            pid: this.$store.state.user.likelistID,
+            song: item
+          })
+        } else {
+          Message.info('您还没有登录')
+        }
+      },
       formatTime(time) {
         let minute = parseInt(time / 60)
         if (minute < 10) {

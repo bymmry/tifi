@@ -238,7 +238,7 @@
         wyApi.getMusicUrl(item.id).then((data) => {
           if (data.code == 200) {
             // console.log(data)
-            this.$store.commit('playMuisc', {
+            this.$store.commit('playMusic', {
               url: data.data[0].url,
               artist: {
                 name: item.ar[0].name

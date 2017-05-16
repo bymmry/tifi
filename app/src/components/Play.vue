@@ -5,7 +5,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: 100;
+    z-index: 3;
     background: #fff
   }
 
@@ -44,8 +44,8 @@
 
   .cover-circle {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 45vh;
+    height: 45vh;
     border-radius: 50%;
     border: 1px solid #ccc;
     margin: 0 auto;
@@ -86,7 +86,7 @@
   .playTime {
     text-align: center;
     font-size: 14px;
-    margin-bottom: 2rem
+    margin-bottom: 1rem
   }
 
   .lyric-main {
@@ -144,7 +144,8 @@
       <div class="header">
         <div style="padding:0 2rem;height:50px">
           <div>
-            {{musicData.name}}
+            
+          {{musicData.name}}
             <div style="float:right">
               <svg @click="music.currentTime=0;music.play()" t="1494498618783" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
                 viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8306">
@@ -164,21 +165,22 @@
           </div>
           <div style="margin:.1rem 0;font-size:12px;font-weight:300">
             {{musicData.artist}}
+            
           </div>
         </div>
         <div class="wdir">
         </div>
         <div class="cover-main">
-          <mu-circular-progress mode="determinate" class="cover-progress" :strokeWidth="3" :size="301" color="red" :value="playProgress"
-          />
-          <div class="cover-circle">
+          <!--<mu-circular-progress mode="determinate" class="cover-progress" :strokeWidth="3" :size="301" color="red" :value="playProgress"
+          />-->
+          <div class="cover-circle" :style="{'animation-play-state':onPlay?'running':'paused'}">
             <img :src="musicData.cover" class="cover" style="padding:20px;border:none">
           </div>
         </div>
         <div class="playTime">
           {{formatTime(currTime)}} / {{formatTime(music.duration)}}
         </div>
-        <div class="lyric-main" style="height:90px;overflow:hidden" v-lyricScroll>
+        <div class="lyric-main" style="height:10vh;overflow:hidden" v-lyricScroll>
           <div v-if="index == activeLrcIndex || (index-1) == activeLrcIndex || (index+1) == activeLrcIndex" :class="{activeLrc:index===activeLrcIndex}"
             v-for="(item,index) in lyricText">
             <span v-if="item">{{item}}</span>
@@ -202,7 +204,7 @@
           <mu-slider :value="playProgress" @change="changeTime" />
         </div>
         <div class="control">
-          <svg t="1494551573737" class="icon" style="font-size:25px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+          <svg t="1494551573737" class="icon" style="font-size:24px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
             viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2920">
             <path d="M511.548722 923.112242c-7.806803 0-15.613606-2.963495-21.590737-8.896624-12.012591-11.92561-12.082176-31.330566-0.157589-43.344181 2.564405-2.581802 256.975722-258.84428 306.748313-308.614823 58.745962-58.745962 93.121887-123.401518 99.412151-186.973392 5.987365-60.495816-14.224979-115.847471-58.44818-160.070672-42.089607-42.088584-90.715071-59.105143-144.533814-50.562583-52.2889 8.296967-107.533109 40.287565-159.758564 92.511997-5.747911 5.748934-13.543458 8.976442-21.670555 8.976442-8.129144 0-15.923668-3.228531-21.671579-8.976442-52.225455-52.225455-107.467617-84.216054-159.75754-92.511997-53.81465-8.547677-102.443184 8.473999-144.532791 50.562583-44.224224 44.224224-64.435545 99.57588-58.449203 160.070672 6.291287 63.571874 40.667212 128.228453 99.413174 186.973392 22.810518 22.808472 181.696202 182.502567 183.298699 184.114275 11.93789 11.997242 11.887748 31.404244-0.110517 43.342134-11.997242 11.933797-31.404244 11.887748-43.342134-0.109494-1.602498-1.609661-160.431899-161.248498-183.187159-184.004781C114.324792 536.714891 73.842799 459.159538 66.140373 381.318682c-7.742335-78.246085 19.285229-152.630213 76.104305-209.448266 55.948243-55.95029 124.235512-79.378885 197.479677-67.75822 57.564044 9.131985 116.504434 39.813774 171.824367 89.209788 55.320956-49.396014 114.261347-80.077803 171.82539-89.209788 73.241095-11.628852 141.531434 11.80793 197.479677 67.75822 56.819077 56.818053 83.847663 131.203204 76.104305 209.448266-7.702426 77.840856-48.184419 155.396209-117.068276 224.280066C790.197046 655.29152 535.862477 911.476227 533.300119 914.058029 527.309684 920.091442 519.429203 923.112242 511.548722 923.112242z"
               p-id="2921"></path>
@@ -235,68 +237,73 @@
             <path d="M934.4 0c-12.8 0-25.6 12.8-25.6 25.6v460.8c0-19.2-12.8-32-25.6-38.4L249.6 51.2C236.8 44.8 217.6 44.8 204.8 44.8 166.4 44.8 128 76.8 128 115.2v793.6c0 38.4 38.4 70.4 76.8 70.4 12.8 0 32-6.4 44.8-12.8L876.8 576c12.8-6.4 25.6-25.6 25.6-38.4v460.8c0 12.8 12.8 25.6 25.6 25.6s25.6-12.8 25.6-25.6V25.6c6.4-12.8-6.4-25.6-19.2-25.6z m-83.2 524.8l-633.6 396.8c-6.4 6.4-25.6 0-25.6-12.8V115.2c0-6.4 12.8-12.8 19.2-12.8h12.8l633.6 396.8V512s0 6.4-6.4 12.8z"
               p-id="2205"></path>
           </svg>
-          <svg @click="commentShow=true;getCommont()" t="1494553020263" class="icon" style="font-size:25px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+          <svg @click="commentShow=true;getCommont()" t="1494553020263" class="icon" style="font-size:24px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
             viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4558">
             <path d="M512 928c-8.192 0-16.384-3.136-22.624-9.376l-96-96c-12.512-12.512-12.512-32.736 0-45.248s32.736-12.512 45.248 0L512 850.752l73.376-73.376C591.36 771.36 599.488 768 608 768l224 0c17.664 0 32-14.336 32-32L864 224c0-17.632-14.336-32-32-32L192 192C174.368 192 160 206.368 160 224l0 512c0 17.664 14.368 32 32 32l96 0c17.664 0 32 14.304 32 32s-14.336 32-32 32L192 832c-52.928 0-96-43.072-96-96L96 224c0-52.928 43.072-96 96-96l640 0c52.928 0 96 43.072 96 96l0 512c0 52.928-43.072 96-96 96l-210.752 0-86.624 86.624C528.384 924.864 520.192 928 512 928zM336 512C309.536 512 288 490.464 288 464S309.536 416 336 416s48 21.536 48 48S362.464 512 336 512zM528 512c-26.464 0-48-21.536-48-48s21.536-48 48-48 48 21.536 48 48S554.464 512 528 512zM720 512c-26.464 0-48-21.536-48-48s21.536-48 48-48 48 21.536 48 48S746.464 512 720 512z"
               p-id="4559"></path>
           </svg>
-
         </div>
       </div>
     </div>
 
     <div v-if="commentShow" class="comment">
-      <div style="font-size:25px;width:20px;float:left;margin:10px 10px">
-        评论详情
+      <div v-if="commentLoading" class="text-center" style="padding-top:200px">
+        <mu-circular-progress :size="40" />
       </div>
-      <div style="margin-top:10px;float:left;padding:0 20px;width:calc(100% - 40px)">
-        <div style="line-height:50px;height:50px;font-weight:400">
-          <div style="line-height:25px;height:25px">
-            {{musicData.name}}
-            <div style="float:right">
-              <svg @click="commentShow=false" t="1494498763016" class="icon" style="width: 2em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
-                viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10186">
-                <path d="M917.333333 490.666667l-759.146667 0 368.896-368.917333c8.341333-8.341333 8.341333-21.824 0-30.165333-8.341333-8.362667-21.824-8.341333-30.165333 0l-405.312 405.312c-1.984 1.984-3.541333 4.330667-4.629333 6.954667-1.002667 2.432-1.472 5.013333-1.536 7.594667 0 0.192-0.106667 0.362667-0.106667 0.533333s0.106667 0.341333 0.106667 0.512c0.064 2.602667 0.533333 5.184 1.536 7.616 2.176 5.226667 6.314667 9.365333 11.541333 11.541333 2.538667 1.045333 5.205333 1.557333 7.893333 1.6 0.085333 0 0.170667 0.042667 0.256 0.042667l810.666667 0c11.776 0 21.333333-9.536 21.333333-21.333333S929.109333 490.666667 917.333333 490.666667z"
-                  p-id="10187"></path>
-                <path d="M346.069333 721.237333 346.069333 721.237333l-96.32-96.32c-8.341333-8.341333-21.824-8.341333-30.186667 0s-8.341333 21.824 0 30.165333l181.013333 181.013333 0 0 96.32 96.32c8.341333 8.341333 21.824 8.341333 30.186667 0s8.341333-21.824 0-30.165333L346.069333 721.237333z"
-                  p-id="10188"></path>
-              </svg>
+      <div v-else>
+        <div style="font-size:25px;width:20px;float:left;margin:10px 10px">
+          评论详情
+        </div>
+        <div style="margin-top:10px;float:left;padding:0 20px;width:calc(100% - 40px)">
+          <div style="line-height:50px;height:50px;font-weight:400">
+            <div style="line-height:25px;height:25px">
+              {{musicData.name}}
+              <div style="float:right">
+                <svg @click="commentShow=false" t="1494498763016" class="icon" style="width: 2em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+                  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10186">
+                  <path d="M917.333333 490.666667l-759.146667 0 368.896-368.917333c8.341333-8.341333 8.341333-21.824 0-30.165333-8.341333-8.362667-21.824-8.341333-30.165333 0l-405.312 405.312c-1.984 1.984-3.541333 4.330667-4.629333 6.954667-1.002667 2.432-1.472 5.013333-1.536 7.594667 0 0.192-0.106667 0.362667-0.106667 0.533333s0.106667 0.341333 0.106667 0.512c0.064 2.602667 0.533333 5.184 1.536 7.616 2.176 5.226667 6.314667 9.365333 11.541333 11.541333 2.538667 1.045333 5.205333 1.557333 7.893333 1.6 0.085333 0 0.170667 0.042667 0.256 0.042667l810.666667 0c11.776 0 21.333333-9.536 21.333333-21.333333S929.109333 490.666667 917.333333 490.666667z"
+                    p-id="10187"></path>
+                  <path d="M346.069333 721.237333 346.069333 721.237333l-96.32-96.32c-8.341333-8.341333-21.824-8.341333-30.186667 0s-8.341333 21.824 0 30.165333l181.013333 181.013333 0 0 96.32 96.32c8.341333 8.341333 21.824 8.341333 30.186667 0s8.341333-21.824 0-30.165333L346.069333 721.237333z"
+                    p-id="10188"></path>
+                </svg>
+              </div>
+            </div>
+            <div style="line-height:25px;height:25px;margin:.1rem 0;font-size:12px;">
+              {{musicData.artist}}
+              <div style="float:right">
+                共 {{commentCount}} 条评论
+              </div>
             </div>
           </div>
-          <div style="line-height:25px;height:25px;margin:.1rem 0;font-size:12px;">
-            {{musicData.artist}}
-            <div style="float:right">
-              共 {{commentCount}} 条评论
+          <div class="wdir" style="margin-bottom:1rem">
+          </div>
+          <div style="height:calc(100vh - 100px);overflow-x:hidden;overflow-y:auto">
+            <div style="font-size:16px">
+              热门评论({{hotComment.length}})
+            </div>
+            <div class="dir"></div>
+            <div style="font-size:12px;min-height:50px;margin:.7rem 0" v-for="(item,index) in hotComment">
+              <div style="height:50px;width:50px;float:left;padding:3px">
+                <img :src="item.user.avatarUrl" style="width:100%;height:100%;border-radius:50%">
+              </div>
+              <span style="font-weight:500">{{item.user.nickname}}:</span>{{item.content}}
+            </div>
+            <div style="font-size:16px">
+              最新评论({{newComment.length}})
+            </div>
+            <div class="dir"></div>
+            <div style="font-size:12px;min-height:50px;margin:.7rem 0" v-for="(item,index) in newComment">
+              <div style="height:50px;width:50px;float:left;padding:3px">
+                <img :src="item.user.avatarUrl" style="width:100%;height:100%;border-radius:50%">
+              </div>
+              <span style="font-weight:500">{{item.user.nickname}}:</span>{{item.content}}
             </div>
           </div>
         </div>
-        <div class="wdir" style="margin-bottom:1rem">
+      </div>
 
-        </div>
-        <div style="height:calc(100vh - 100px);overflow-x:hidden;overflow-y:auto">
-          <div style="font-size:16px">
-            热门评论({{hotComment.length}})
-          </div>
-          <div class="dir"></div>
-          <div style="font-size:12px;min-height:50px;margin:.7rem 0" v-for="(item,index) in hotComment">
-            <div style="height:50px;width:50px;float:left;padding:3px">
-              <img :src="item.user.avatarUrl" style="width:100%;height:100%;border-radius:50%">
-            </div>
-            <span style="font-weight:500">{{item.user.nickname}}:</span>{{item.content}}
-          </div>
-          <div style="font-size:16px">
-            最新评论({{newComment.length}})
-          </div>
-          <div class="dir"></div>
-          <div style="font-size:12px;min-height:50px;margin:.7rem 0" v-for="(item,index) in newComment">
-            <div style="height:50px;width:50px;float:left;padding:3px">
-              <img :src="item.user.avatarUrl" style="width:100%;height:100%;border-radius:50%">
-            </div>
-            <span style="font-weight:500">{{item.user.nickname}}:</span>{{item.content}}
-          </div>
-        </div>
-      </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -312,6 +319,7 @@
         // onPlay: true,
         moreLyric: false,
         commentShow: false,
+        commentLoading: true,
         commentCount: 0,
         hotComment: [],
         newComment: []
@@ -398,11 +406,13 @@
         }
       },
       getCommont(page) {
+        this.commentLoading = true
         wyApi.getComment(this.musicData.wyID, 0, 100).then((data) => {
           // console.log(data)
           this.commentCount = data.total
           this.hotComment = data.hotComments
           this.newComment = data.comments
+          this.commentLoading = false
           // this.commentData = data
           // if (page == 0) {
           //   this.hotComment = data.hotComments

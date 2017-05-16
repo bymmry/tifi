@@ -24,7 +24,7 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
   if (response.data.code===200) {
     if(response.data.info){
-      // Message.success(response.data.info)
+      Message.success(response.data.info)
     }
     return response.data
   } else {
@@ -39,7 +39,7 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-let baseURL = 'http://127.0.0.1:5000'
+let baseURL = 'http://192.168.43.217:5000'
 export default {
   //获取手机验证码
   getPhoneCode(data){
@@ -62,8 +62,8 @@ export default {
     return instance.post(baseURL+'/retrievePlaylist', data)
   },
   //添加歌曲进歌单
-  addSong(data){
-    return instance.post(baseURL+'/addSong', data)
+  addSongToPlaylist(data){
+    return instance.post(baseURL+'/addSongToPlaylist', data)
   },
   //音频识别
   audioRec(data){
@@ -79,7 +79,7 @@ export default {
       return instance.post(baseURL+'/retrieveArtist', data)
     } else {
       return instance.post(baseURL+'/retrieveArtist')
-    }   
+    }
   },
   //添加专辑信息
   createAlbum(data){

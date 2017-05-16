@@ -4,14 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import Mint from 'mint-ui'
-import './assets/common.css'
-import 'mint-ui/lib/style.css'
-Vue.use(Mint)
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-carbon.css'
 Vue.use(MuseUI)
+
+import './assets/common.css'
 
 Vue.config.productionTip = false
 

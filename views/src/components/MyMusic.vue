@@ -155,7 +155,8 @@
             },
             music: {
               name: 'test'
-            }
+            },
+            url:''
           }],
           tag: [],
           user: {
@@ -224,8 +225,8 @@
         return moment(val).format('YYYY年')
       },
       playMusic(item) {
-        this.$store.commit('playMuisc', {
-          url: 'http://localhost:5000' + item.music.url,
+        this.$store.commit('playMusic', {
+          url: item.url,
           artist: item.artist,
           album: item.album,
           music: item.music

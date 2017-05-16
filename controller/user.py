@@ -1,5 +1,5 @@
 # - * -coding: UTF - 8 - * -
-import time 
+import time
 import random
 import top.api
 from flask import json, request, jsonify
@@ -12,7 +12,7 @@ def user(app, db):
     Code = codeInit(db)
     User = userInit(db)
     Playlist = playlistInit(db)
-    
+
     @app.route('/getPhoneCode', methods=['POST'])
     def getPhoneCode():
         phone = json.loads(request.data)['phone']
@@ -25,7 +25,7 @@ def user(app, db):
         req.extend = code
         req.sms_type = "normal"
         req.sms_free_sign_name = "TIFI音乐"
-        param = "{\"number\":\""+code+"\",\"product\":\"TIFI音乐\"}"
+        param = "{\"number\":\"" + code + "\",\"product\":\"TIFI音乐\"}"
         req.sms_param = param
         req.rec_num = str(phone)
         req.sms_template_code = "SMS_61800227"
@@ -40,10 +40,7 @@ def user(app, db):
                 'codeID': str(codeSchema['id'])
             })
         else:
-            return jsonify({
-                'code': 500,
-                'info': '发送验证码失败'
-            })
+            return jsonify({'code': 500, 'info': '发送验证码失败'})
 
     @app.route('/createUser', methods=['POST'])
     def createUser():
@@ -52,10 +49,7 @@ def user(app, db):
         if code['code'] == data['code']:
             hasUser = User.objects(phone=data['phone']).first()
             if hasUser:
-                return jsonify({
-                    'code': 400,
-                    'info': '该手机已被注册'
-                })
+                return jsonify({'code': 400, 'info': '该手机已被注册'})
             else:
                 playlistSchema = Playlist(uid='0', name='我喜欢的音乐')
                 print playlistSchema['id']
@@ -63,46 +57,42 @@ def user(app, db):
                 userSchema = User(
                     phone=data['phone'],
                     psw=data['password'],
-                    name='寻声'+str(data['phone'])[-4:],
-                    playlist=[str(playlistSchema['id'])]
-                )
+                    name='寻声' + str(data['phone'])[-4:],
+                    playlist=[str(playlistSchema['id'])])
                 userSchema.save()
                 Playlist.objects(id=playlistSchema['id']).first().update(
-                    uid=str(userSchema['id'])
-                )
-                return jsonify({
-                    'code': 200,
-                    'info': '注册成功'
-                })
+                    uid=str(userSchema['id']))
+                return jsonify({'code': 200, 'info': '注册成功'})
         else:
-            return jsonify({
-                'code': 404,
-                'info': '验证码错误'
-            })
+            return jsonify({'code': 404, 'info': '验证码错误'})
 
     @app.route('/login', methods=['POST'])
     def login():
         data = json.loads(request.data)
         # print data
         hasUser = User.objects(
-            phone=data['phone'],
-            psw=data['password']
-        ).first()
+            phone=data['phone'], psw=data['password']).first()
         if hasUser:
             return jsonify({
-                'code': 200,
-                'info': '登录成功',
-                'uid': str(hasUser['id']),
-                'name': hasUser['name'],
-                'picUrl': hasUser['picUrl'],
-                'loginTime': int(time.time()),
-                'playlist': Playlist.objects(uid=str(hasUser['id'])).first()
+                'code':
+                200,
+                'info':
+                '登录成功',
+                'uid':
+                str(hasUser['id']),
+                'name':
+                hasUser['name'],
+                'picUrl':
+                hasUser['picUrl'],
+                'loginTime':
+                int(time.time()),
+                'likelistID':
+                str(Playlist.objects(uid=str(hasUser['id'])).first()['id']),
+                'likelist':
+                Playlist.objects(uid=str(hasUser['id'])).first()['song']
             })
         else:
-            return jsonify({
-                'code': 404,
-                'info': '用户不存在'
-            })
+            return jsonify({'code': 404, 'info': '用户不存在'})
 
     @app.route('/retrieveUser', methods=['POST'])
     def retrieveUser():
@@ -142,8 +132,4 @@ def user(app, db):
                         'name': user['name'],
                     }
                 })
-        return jsonify({
-            'code': 200,
-            'info': '成功读取用户歌单',
-            'result': result
-        })
+        return jsonify({'code': 200, 'info': '成功读取用户歌单', 'result': result})

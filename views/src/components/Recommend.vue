@@ -82,6 +82,33 @@
         </div>
         <i-row style="line-height:2rem;margin-bottom:2rem">
           <i-col span="4" style="text-align:left">
+            <h1>热门单曲</h1>
+          </i-col>
+          <i-col span="18">
+            <span v-for="(item,index) in hotPlayListTag" style="cursor:pointer;padding-left:0.7rem">
+              <span class="text-hover">{{item}}</span>
+            <span v-if="index!=hotPlayListTag.length-1" style="padding-left:0.7rem">|</span>
+            </span>
+          </i-col>
+          <i-col span="2" style="text-align:right">
+            <a>更多</a>
+          </i-col>
+        </i-row>
+        <div style="margin-bottom:3rem">
+          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+            <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hotSong">
+              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
+                <img @click="wyPlayMusic(item)" class="card" v-if="item.album.picUrl" :src="item.album.picUrl"
+                  style="height:150px;width:100%" alt="">
+              </div>
+              <div style="margin-top:.5rem">
+                {{item.name}} - {{item.artists[0].name}}
+              </div>
+            </i-col>
+          </i-row>
+        </div>
+        <i-row style="line-height:2rem;margin-bottom:2rem">
+          <i-col span="4" style="text-align:left">
             <h1>精选歌单</h1>
           </i-col>
           <i-col span="18">
@@ -216,6 +243,7 @@
         msg: 'TIFI MUSIC - 大道至简 悟在天成',
         hotPlayListTag: ['华语', '流行', '老歌', '粤语', '英文', '摇滚', '民谣'],
         hotPlaylist: [],
+        hotSong:[],
         hightPlaylist: [],
         hotArtist: [],
         playTop: [],
@@ -231,7 +259,7 @@
     // },
     methods: {
       playMusic(item) {
-        this.$store.commit('playMuisc', {
+        this.$store.commit('playMusic', {
           url: 'http://localhost:5000' + item.music.url,
           artist: item.artist,
           album: item.album,
@@ -254,14 +282,21 @@
             url: item.mp3Url
           }
         }
-        this.$store.commit('playMuisc', musicData)
+        this.$store.commit('playMusic', musicData)
       }
     },
     mounted() {
+     
       wyApi.getHotPlaylist(8).then((data) => {
         if (data.code == 200) {
           this.hotPlaylist = data.playlists
         }
+      }).then(()=>{
+        wyApi.getToplist(1).then((data) => {
+          if (data.code == 200) {
+            this.hotSong = data.result.tracks
+          }
+        })
       }).then(() => {
         wyApi.getHightPlaylist(8).then((data) => {
           if (data.code == 200) {

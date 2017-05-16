@@ -70,9 +70,6 @@
           <i-row style="line-height:42px">
             <i-col span="18" style="font-size:1.5rem">
               专辑 - {{albumBase.name}}
-              <tooltip trigger="hover" content="收藏该专辑">
-                <i-icon class="cursor" @click.native="likeControl" type="android-favorite-outline"></i-icon>
-              </tooltip>
             </i-col>
           </i-row>
           <div class="dir"></div>
@@ -211,7 +208,7 @@
             }
           }
           console.log(musicData)
-          this.$store.commit('playMuisc', musicData)
+          this.$store.commit('playMusic', musicData)
         })
       },
       formatTimeForYear(val) {

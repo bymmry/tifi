@@ -16,7 +16,7 @@ const state = {
   }]
 }
 const mutations = {
-  routerActive(state, index) {
+  router(state, index) {
     state.routerIndex = index
     if(index!=='other'){
       router.push(state.router[index].path)

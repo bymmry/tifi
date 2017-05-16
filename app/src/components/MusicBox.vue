@@ -6,15 +6,16 @@
     bottom: 0%;
     right: 0%;
     width: 100%;
-    z-index: 99;
-    line-height: 50px
+    z-index: 2;
+    line-height: 50px;
+    border: 1px solid #f0f0f0
   }
 
 </style>
 
 <template>
-  <div class="music-player card card5" @click="$store.commit('playBox',true)">
-    <div style="height:40px;width:40px;float:left;background:#f0f0f0;margin-top:5px">
+  <div class="music-player" @click="$store.commit('playBox',true)">
+      <div style="height:40px;width:40px;float:left;background:#f0f0f0;margin-top:5px">
       <img :src="musicData.cover" style="width:100%;height:100%">
     </div>
     <div style="float:left;line-height:20px;font-size:12px;padding-left:10px">

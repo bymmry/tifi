@@ -27,6 +27,7 @@ module.exports = {
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    proxyTable:{},
     // proxyTable: {
     //   '/': {
     //     //这里的target填服务端的端口的接口地址

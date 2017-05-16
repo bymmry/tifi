@@ -109,13 +109,10 @@
         <i-col span="18" offset="2">
           <div class="dir"></div>
           <i-row class="text-center">
-            <i-col span="8" offset="4">
+            <i-col span="12" offset="5">
               歌名
             </i-col>
-            <i-col span="4">
-              歌手
-            </i-col>
-            <i-col span="8">
+            <i-col span="7">
               专辑
             </i-col>
           </i-row>
@@ -128,16 +125,17 @@
               <i-col span="2" class="text-center">
                 {{index+1}}
               </i-col>
-              <i-col span="2">
+              <i-col span="3" class="text-center">
                 <i-icon @click.native="wyPlayMusic(song)" class="cursor" type="play"></i-icon>
+                <i-icon v-if="song.like" style="color:red;margin:0 .7rem" type="android-favorite"></i-icon>
+                <i-icon v-else style="margin:0 .7rem" type="android-favorite-outline" @click.native="likeSong(song,index)" class="cursor"></i-icon>
+                <i-icon @click.native="addToPlaylist(song)" class="cursor" type="android-add"></i-icon>
               </i-col>
-              <i-col span="8">
+              <i-col span="12">
                 {{song.name}}
               </i-col>
-              <i-col span="4">
-                {{song.ar[0].name}}
-              </i-col>
-              <i-col span="8">
+
+              <i-col span="7">
                 {{song.al.name}}
               </i-col>
             </i-row>
@@ -204,6 +202,9 @@
   </div>
 </template>
 <script>
+import {
+  Message
+} from 'iview'
   import moment from 'moment'
   moment.locale('zh-cn')
   import wyApi from '../wyApi.js'
@@ -241,18 +242,86 @@
             }
           }
           console.log(musicData)
-          this.$store.commit('playMuisc', musicData)
+          this.$store.commit('playMusic', musicData)
         })
       },
       formatTimeForYear(val) {
         return moment(val).format('YYYY年')
       },
+      likeSong(item,itemIndex) {
+        if (this.$store.state.user.type == 'member') {
+          wyApi.getMusicUrl(item.id).then((data) => {
+            if (data.code == 200) {
+              this.$store.dispatch('likeSong', {
+                pid: this.$store.state.user.likelistID,
+                song: {
+                  url: data.data[0].url,
+                  artist: {
+                    name: item.ar[0].name
+                  },
+                  album: {
+                    picUrl: item.al.picUrl,
+                    name: item.al.name
+                  },
+                  music: {
+                    wyID: item.id,
+                    name: item.name
+                  }
+                }
+              })
+              let likelist = this.$store.state.user.likelist
+              this.hotSong.forEach((item, index) => {
+                likelist.forEach((like) => {
+                  if (like.music.wyID == item.id) {
+                    let newItem = item
+                    item.like = true
+                    this.hotSong.splice(itemIndex,1,newItem)
+                    Message.success('成功收藏')
+                  }
+                })
+              })
+
+            }
+          })
+        } else {
+          Message.error('您还没有登录')
+        }
+      },
+      addToPlaylist(item) {
+        wyApi.getMusicUrl(item.id).then((data) => {
+          if (data.code == 200) {
+            this.$store.commit('addPlaylist', {
+              url: data.data[0].url,
+              artist: {
+                name: item.ar[0].name
+              },
+              album: {
+                picUrl: item.al.picUrl,
+                name: item.al.name
+              },
+              music: {
+                wyID: item.id,
+                name: item.name
+              }
+            })
+            Message.success('成功添加到播放列表')
+          }
+        })
+      }
     },
     mounted() {
       wyApi.getArtistSong(this.artistID).then((data) => {
         if (data.code == 200) {
           this.artistBase = data.artist
           this.hotSong = data.hotSongs
+          let likelist = this.$store.state.user.likelist
+          this.hotSong.forEach((item, index) => {
+            likelist.forEach((like) => {
+              if (like.music.wyID == item.id) {
+                this.hotSong[index].like = true
+              }
+            })
+          })
         }
       }).then(() => {
         wyApi.getArtistAlbum(this.artistID, 100).then((data) => {

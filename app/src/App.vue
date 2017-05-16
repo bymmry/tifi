@@ -10,6 +10,7 @@
       <play v-if="musicBox.playBox"></play>
     </transition>
     <musicBox v-if="musicBox.miniBox"></musicBox>
+    <info v-if="infoVisible"></info>
   </div>
 </template>
 
@@ -17,17 +18,25 @@
   import myHeader from './components/Header.vue'
   import play from './components/Play.vue'
   import musicBox from './components/MusicBox.vue'
+  import info from './components/info.vue'
   export default {
     name: 'app',
     components: {
       myHeader,
       play,
-      musicBox
+      musicBox,
+      info
     },
     computed: {
       musicBox() {
         return this.$store.state.musicBox
+      },
+      infoVisible(){
+        return this.$store.state.info.infoVisible
       }
+    },
+    mounted(){
+      this.$store.commit('loadSonglist')
     }
   }
 
@@ -39,13 +48,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    margin-top: 5px;
+    overflow: hidden;
   }
 
   .continer {
     margin-top: 104px;
-    padding-bottom: 50px;
-    height: calc(100vh - 104px);
+    padding: 0 5px 50px 5px;
+    height: calc(100vh - 110px);
     overflow-y: auto;
     overflow-x: hidden
   }

@@ -10,18 +10,22 @@ background-repeat: no-repeat;
 background-attachment:fixed;
 background-size: cover;*/
 }
-
+.mu-grid-tile-titlebar{
+  height:35px !important;
+}
 ::-webkit-scrollbar {
   border-radius: 5px;
   width: 5px;
   height: 5px;
   position: absolute;
-  left: 0
+  left: 0;
+  opacity:0
 }
 
 ::-webkit-scrollbar-track {
   border-radius: 5px;
   background-color: #ddd;
+  opacity:0
 }
 
 
@@ -30,6 +34,7 @@ background-size: cover;*/
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.2);
+  opacity:0
 }
 
 
@@ -38,6 +43,7 @@ background-size: cover;*/
 ::-webkit-scrollbar-button {
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.2);
+  opacity:0
 }
 
 
@@ -46,6 +52,7 @@ background-size: cover;*/
 ::-webkit-scrollbar-corner {
   border-radius: 5px;
   background-color: #ddd;
+  opacity:0
 }
 
 
@@ -53,9 +60,9 @@ background-size: cover;*/
 
 /* 横向滚动条和纵向滚动条相交处尖角的颜色 */
 
-.bottom {
+/*.bottom {
   height: 50px
-}
+}*/
 
 .text-center {
   text-align: center
@@ -249,6 +256,66 @@ button {
   background: #616161;
   color: #fff
 }
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ellipsis2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display:-webkit-box; 
+
+-webkit-box-orient:vertical;
+
+-webkit-line-clamp:2; 
+}
+.mu-card-media-title{
+  padding: 5px !important;
+  color: #fff !important;
+}
+.mu-card-sub-title{
+  color: #fff !important;
+  font-size: 13px !important
+}
+
+.title-border {
+    position: absolute;
+    top: 6px;
+    left: 0;
+    height: 14px;
+    width: 2px;
+    background: #41464b;
+    border-radius: 4px
+  }
+
+  .card-title {
+    font-size: 18px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+    position: relative
+  }
+
+  .card-conten {
+    padding: 5px;
+    font-size: 14px;
+    margin-bottom: 10px
+  }
+  .mu-icon-button{
+    padding:0 !important;
+    width:1rem !important;
+    height:1rem !important;
+    font-size:14px !important;
+  }
+  .mu-list{
+    padding:0 !important;
+  }
+  .mu-item-title{
+    font-size:14px !important;
+  }
+
 
 
 /*@media only screen and (max-width: 1200px) {

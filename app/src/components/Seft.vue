@@ -1,10 +1,10 @@
 <template>
   <div>
-    <keep-alive>
+    <!--<keep-alive>-->
       <transition name="fade" mode="out-in">
         <router-view class="child-continer"></router-view>
       </transition>
-    </keep-alive>
+    <!--</keep-alive>-->
   </div>
 </template>
 

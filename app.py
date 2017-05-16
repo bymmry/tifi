@@ -1,7 +1,9 @@
 # - * -coding: UTF - 8 - * -
 # lib
 from flask import Flask
+# 连接mongodb的中间件
 from flask_mongoengine import MongoEngine
+# 解决跨域问题
 from flask_cors import CORS
 # controller
 from controller.test import test

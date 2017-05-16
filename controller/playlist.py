@@ -41,39 +41,11 @@ def playlist(app, db):
         else:
             playlist = Playlist.objects(id=data['id']).first()
             user = User.objects(id=playlist['uid']).all().first()
-            songs = []
-            for songID in playlist['song']:
-                music = Music.objects(id=songID).first()
-                if music:
-                    album = Album.objects(id=music['albumID']).first()
-                    if album:
-                        artist = Artist.objects(id=album['artistID']).first()
-                    else:
-                        artist = ''
-                    songs.append({
-                        'music': {
-                            'id': str(music['id']),
-                            'name': music['name'],
-                            'url': music['url'],
-                            'wyID': music['wyID']
-                        },
-                        'album': {
-                            'id': str(album['id']),
-                            'name': album['name'],
-                            'publishTime': album['publishTime'],
-                            'picUrl': album['picUrl']
-                        },
-                        'artist': {
-                            'id': str(artist['id']),
-                            'name': artist['name'],
-                            'picUrl': artist['picUrl']
-                        }
-                    })
             result = {
                 'id': str(playlist['id']),
                 'name': playlist['name'],
                 'createTime': playlist['createTime'],
-                'song': songs,
+                'song': playlist['song'],
                 'play': playlist['play'],
                 'like': playlist['like'],
                 'tag': playlist['tag'],
@@ -86,19 +58,15 @@ def playlist(app, db):
             }
         return jsonify({'code': 200, 'info': '成功读取歌单', 'result': result})
 
-    @app.route('/addSong', methods=['POST'])
-    def addSong():
+    @app.route('/addSongToPlaylist', methods=['POST'])
+    def addSongToPlaylist():
         data = json.loads(request.data)
-        playlist = Playlist.objects(id=data['id']).first()
+        playlist = Playlist.objects(id=data['pid']).first()
         localSong = playlist['song']
-        if type(data['songID']) == list:
-            return jsonify({
-                'code': 200,
-                'info': '成功收藏进',
-                'playlist': playlist
-            })
+        if type(data['song']) == list:
+            for item in data['song']:
+                localSong.append(item)
         else:
-            song = Music.objects(id=data['songID']).first()
-            localSong.append(str(song['id']))
+            localSong.append(data['song'])
         playlist.update(song=localSong)
-        return jsonify({'code': 200, 'info': '成功收藏', 'playlist': playlist})
+        return jsonify({'code': 200, 'info': '成功收藏', 'likelist': localSong})

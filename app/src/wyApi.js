@@ -19,8 +19,8 @@ instance.interceptors.response.use(response => {
 let baseURL = 'http://www.tifi.me:3000'
 export default {
   //使用网易云的搜索
-  search(data,type,offset){
-    return instance.get(baseURL+'/search?limit=20&type='+type+'&offset='+offset+'&keywords='+data)
+  search(keywords,type,offset=0,limit=20){
+    return instance.get(baseURL+'/search?limit='+limit+'&type='+type+'&offset='+offset*limit+'&keywords='+keywords)
   },
   //获取歌曲的歌词
   getLyric(id){
@@ -37,10 +37,6 @@ export default {
   //获取专辑歌曲
   getSong(id){
     return instance.get(baseURL+'/album?id='+id)
-  },
-  //获取歌手描述
-  getArtistDesc(id){
-    return instance.get(baseURL+'/artist/desc?id='+id)
   },
   //获取热门歌单
   getHotPlaylist(limit){
@@ -85,8 +81,40 @@ export default {
     return instance.get(baseURL+'/top/playlist?limit='+limit+'&order=hot')
   },
   //获取热门歌手
-  getHotArtist(offset=0,limit=30){
+  getHotArtist(offset=0,limit=100){
     return instance.get(baseURL+'/top/artists?offset='+offset+'&limit='+limit)
+  },
+  //获取专辑详情
+  getAlbumInfo(id) {
+    return instance.get(baseURL + '/album?id=' + id)
+  },
+  //获取专辑评论
+  getAlbumComment(id, offset = 0) {
+    return instance.get(baseURL + '/comment/album?id=' + id + '&limit=10&offset=' + offset)
+  },
+  //获取歌单详情
+  getPlaylistDetail(id) {
+    return instance.get(baseURL + '/playlist/detail?id=' + id)
+  },
+  //获取歌单评论
+  getPlaylistComment(id, offset = 0) {
+    return instance.get(baseURL + '/comment/playlist?limit=10&offset=' + offset + '&id=' + id)
+  },
+  //获取歌手单曲
+  getArtistSong(id) {
+    return instance.get(baseURL + '/artists?id=' + id)
+  },
+  //获取歌手专辑
+  getArtistAlbum(id, limit = 50) {
+    return instance.get(baseURL + '/artist/album?id=' + id + '&limit=' + limit)
+  },
+  //获取歌手描述
+  getArtistDesc(id) {
+    return instance.get(baseURL + '/artist/desc?id=' + id)
+  },
+  //获取音乐url
+  getMusicUrl(id){
+    return instance.get(baseURL + '/music/url?id=' + id)
   }
   
 }

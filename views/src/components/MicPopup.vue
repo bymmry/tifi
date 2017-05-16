@@ -186,7 +186,7 @@
         }
       },
       playMusic(item) {
-        this.$store.commit('playMuisc', {
+        this.$store.commit('playMusic', {
           url: 'http://localhost:5000' + item.url,
           artist: item.artist,
           album: item.album,
