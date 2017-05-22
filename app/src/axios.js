@@ -40,6 +40,7 @@ let baseURL = 'http://192.168.43.217:5000'
 export default {
   //获取手机验证码
   getPhoneCode(data){
+
     return instance.post(baseURL+'/getPhoneCode', data)
   },
   //添加用户

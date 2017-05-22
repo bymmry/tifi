@@ -37,6 +37,7 @@
     },
     mounted(){
       this.$store.commit('loadSonglist')
+      this.$store.commit('loadLikelist')
     }
   }
 

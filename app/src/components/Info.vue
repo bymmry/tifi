@@ -96,7 +96,7 @@
               {{item.name}} - {{item.ar[0].name}}
             </div>
             <div slot="right">
-              <svg t="1494778069842" class="icon" style="padding-bottom:4px;font-size:20px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+              <svg @click.stop="addToSonglist(item)" t="1494778069842" class="icon" style="padding-bottom:4px;font-size:20px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
                 viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3150">
                 <path d="M936.5504 332.5952c-23.2448-54.8864-56.4224-104.1408-98.7136-146.432-42.2912-42.2912-91.5456-75.5712-146.432-98.7136C634.5728 63.3856 574.1568 51.2 512 51.2S389.4272 63.3856 332.5952 87.4496c-54.8864 23.2448-104.1408 56.4224-146.432 98.7136-42.2912 42.2912-75.5712 91.5456-98.7136 146.432C63.3856 389.4272 51.2 449.8432 51.2 512c0 62.1568 12.1856 122.5728 36.2496 179.4048 23.2448 54.8864 56.4224 104.1408 98.7136 146.432s91.5456 75.5712 146.432 98.7136C389.4272 960.6144 449.8432 972.8 512 972.8c51.3024 0 101.5808-8.3968 149.7088-24.8832 46.4896-15.9744 89.9072-39.2192 129.1264-69.0176 11.776-9.0112 23.2448-18.6368 34.0992-28.672 12.4928-11.5712 13.2096-30.9248 1.6384-43.4176s-30.9248-13.2096-43.4176-1.6384c-9.4208 8.704-19.3536 17.1008-29.5936 24.8832-69.9392 53.248-153.4976 81.408-241.664 81.408-220.2624 0-399.36-179.2-399.36-399.36 0-220.16 179.2-399.36 399.36-399.36s399.36 179.2 399.36 399.36c0 48.3328-8.4992 95.4368-25.2928 140.288-5.9392 15.872 2.048 33.5872 17.92 39.5264 15.872 5.9392 33.5872-2.048 39.5264-17.92 19.3536-51.712 29.184-106.0864 29.184-161.792C972.8 449.8432 960.6144 389.4272 936.5504 332.5952z"
                   p-id="3151"></path>
@@ -221,6 +221,25 @@
       formatTimeForYear(val) {
         return moment(val).format('YYYY年')
       },
+      addToSonglist(item){
+        let musicData = {}
+        // if (this.type == 1 || this.type == 0) {
+        musicData = {
+          cover: item.al.picUrl,
+          artist: item.ar[0].name,
+          name: item.name,
+          wyID: item.id,
+          needPost:true
+        }
+        this.$store.commit('addToSonglist', musicData)
+        // }
+        // wyApi.getMusicUrl(item.id).then((data) => {
+        //   if (data.code == 200) {
+        //     musicData.url = data.data[0].url
+        //     this.$store.commit('addToSonglist', musicData)
+        //   }
+        // })
+      },
       play(item) {
         let musicData = {}
         // if (this.type == 1 || this.type == 0) {
@@ -228,15 +247,17 @@
           cover: item.al.picUrl,
           artist: item.ar[0].name,
           name: item.name,
-          wyID: item.id
+          wyID: item.id,
+          needPost:true
         }
+        this.$store.dispatch('playMusic', musicData)
         // }
-        wyApi.getMusicUrl(item.id).then((data) => {
-          if (data.code == 200) {
-            musicData.url = data.data[0].url
-            this.$store.commit('playMusic', musicData)
-          }
-        })
+        // wyApi.getMusicUrl(item.id).then((data) => {
+        //   if (data.code == 200) {
+        //     musicData.url = data.data[0].url
+        //     this.$store.commit('playMusic', musicData)
+        //   }
+        // })
       }
     }
   }

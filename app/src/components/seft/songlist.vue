@@ -6,9 +6,11 @@
 <template lang="html">
 	<div class="">
 		<mu-list v-if="songlist.length>0" style="font-size:14px">
-			<mu-list-item @click.native="$store.commit('playMusic',item)" :key="index" :class="{'active-song':item.wyID==wyID}" v-for="item,index in songlist">
+			<mu-list-item @click.native="$store.dispatch('playMusic', item)" :key="index" :class="{'active-song':item.wyID==wyID}" v-for="item,index in songlist">
 				<div slot="left">
 					{{index+1}}
+					<span style="position:absolute;z-index:-1;opacity:0">{{item.like+'like'}}</span>
+					<!--  -->
 					<svg v-if="item.wyID==wyID" t="1494944785363" class="icon" style="padding-bottom:3px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1784"><path d="M971.538916 121.568473c-25.726108 0-44.894581 19.168473-44.894581 44.894581v856.023646H1016.433498V165.958621c0-25.221675-19.168473-44.390148-44.894582-44.390148zM52.461084 427.759606c-25.726108 0-44.894581 19.168473-44.894582 44.894581v549.328079h89.28473V472.654187c0-25.726108-19.168473-44.894581-44.390148-44.894581zM358.652217 0c-25.726108 0-44.894581 19.168473-44.894582 44.894581v977.087685h89.28473V44.894581c0.504433-25.726108-18.664039-44.894581-44.390148-44.894581zM665.347783 274.916256c-25.726108 0-44.894581 19.168473-44.894581 44.894581v702.675863h89.284729V319.306404c0-25.221675-19.168473-44.390148-44.390148-44.390148z" p-id="1785"></path></svg>
 					<!-- <svg t="1494489248487" class="icon" style="padding-bottom:3px;font-size:20px;width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
 						viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2373">
@@ -20,7 +22,14 @@
 					</svg> -->
 				</div>
 				<div slot="title" class="ellipsis">
-					<svg t="1494777919068" class="icon" style="padding-bottom:3px;font-size:18px;width: 2em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+					<svg v-if="item.like"  t="1494777919068" class="icon" style="color:red;padding-bottom:3px;font-size:18px;width: 2em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
+						viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1943">
+						<path d="M800.436 471.085h-56.363v199.156h-199.158v56.363h199.158v199.157h56.363v-199.157h199.156v-56.363h-199.156v-199.156z"
+							p-id="1944"></path>
+						<path d="M514.191 905.997c0 0-266.877-186.039-372.53-350.613-38.966-60.753-73.855-118.5-73.855-198.288 0-137.777 102.88-249.507 229.809-249.507 93.806 0 161.095 61.108 196.819 148.589v-0.431h0.097c2.66 9.12 10.42 15.771 19.661 15.771 9.272 0 17.032-6.652 19.674-15.771h0.272c35.809-87.222 102.989-148.156 196.663-148.156 126.898 0 229.809 111.734 229.809 249.507 0 55.217-16.719 99.873-39.934 142.277l48.291 35.613c25.793-47.207 47.647-103.554 47.647-174.401 0-173.272-129.843-314.225-289.433-314.225-88.535 0-158.111 44.099-212.289 116.812-54.15-72.736-123.709-116.812-212.291-116.812-159.594 0-289.433 140.952-289.433 314.225 0 103.368 46.503 175.884 83.887 234.145 108.642 169.232 369.072 352.005 380.641 360.886 11.149 8.555 24.18 12.838 37.182 12.838 13.031 0 26.042-4.281 37.176-12.838 2.873-2.203 21.042-15.093 48.392-35.812l-44.020-44.604c-26.015 19.491-42.23 30.798-42.23 30.798v0z"
+							p-id="1945"></path>
+					</svg>
+					<svg v-else @click.stop="$store.commit('addToLikelist',item)" t="1494777919068" class="icon" style="padding-bottom:3px;font-size:18px;width: 2em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;"
 						viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1943">
 						<path d="M800.436 471.085h-56.363v199.156h-199.158v56.363h199.158v199.157h56.363v-199.157h199.156v-56.363h-199.156v-199.156z"
 							p-id="1944"></path>

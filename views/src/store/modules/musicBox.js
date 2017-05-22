@@ -38,6 +38,7 @@ const mutations = {
       })
       if (addFlag) {
         state.playlist.push(payload)
+        localStorage.setItem('playlist', JSON.stringify(state.playlist))
       }
     } else {
       state.playlist = []

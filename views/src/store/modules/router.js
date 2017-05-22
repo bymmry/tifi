@@ -12,7 +12,7 @@ const state = {
     name: '我的音乐'
   }, {
     path: '/friends',
-    name: '朋友'
+    name: '动态'
   }, {
     path: '/musicVideo',
     name: 'MV'

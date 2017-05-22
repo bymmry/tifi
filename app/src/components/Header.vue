@@ -130,7 +130,7 @@
             name: '播放列表',
             path: '/seft/songlist'
           }, {
-            name: '我的歌单',
+            name: '喜欢歌曲',
             path: '/seft/myPlaylist'
           }, {
             name: '收藏歌单',
@@ -204,7 +204,6 @@
             type: this.activeTab,
             key: this.keywords
           })
-
         }
         this.$router.push(this.router[this.active].children[this.activeTab].path)
       }

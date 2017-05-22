@@ -265,11 +265,11 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  display:-webkit-box; 
+  display:-webkit-box;
 
 -webkit-box-orient:vertical;
 
--webkit-line-clamp:2; 
+-webkit-line-clamp:2;
 }
 .mu-card-media-title{
   padding: 5px !important;
@@ -314,6 +314,11 @@ button {
   }
   .mu-item-title{
     font-size:14px !important;
+  }
+  .popup-bottom{
+    width: 100%;
+    bottom: 50px;
+    border-bottom: 1px solid #ccc;
   }
 
 
