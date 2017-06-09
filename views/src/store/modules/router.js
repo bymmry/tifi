@@ -50,6 +50,7 @@ const mutations = {
       path = payload.path
       if(path=='/playlist'){
         sessionStorage.setItem('playlistID', payload.id)
+        sessionStorage.setItem('playlistPicUrl', payload.picUrl)
       }
       if(path=='/playMv'){
         sessionStorage.setItem('mvID', payload.id)

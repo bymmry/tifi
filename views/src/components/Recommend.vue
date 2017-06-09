@@ -39,9 +39,17 @@
   }
 
   .cover {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    height:161.5px;
+    width:100%;
+    /*margin-bottom: 1rem;*/
+    text-align: center;
+    line-height: 161.5px;
+    background: #f0f0f0;
+    border-radius: 4px
+  }
+  .cover img{
+    height:150px;
+    width:100%;
   }
 
 </style>
@@ -68,14 +76,23 @@
           </i-col>
         </i-row>
         <div style="margin-bottom:3rem">
-          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+          <i-row :gutter="32" :key="n" style="margin-bottom:2rem" v-for="n in 2">
             <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hotPlaylist">
-              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
-                <img @click="$store.commit('router',{id:item.id,path:'/playlist'})" class="card" v-if="item.coverImgUrl" :src="item.coverImgUrl"
-                  style="height:150px;width:100%" alt="">
+              <div class="cover">
+                <progressive-img @click.native="$store.commit('router',{id:item.id,path:'/playlist',picUrl:item.coverImgUrl})" class="card card-hover"
+                :src="item.coverImgUrl"
+                :placeholder="item.coverImgUrl"/>
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}}
+              </div>
+            </i-col>
+            <i-col span="6" v-if="(n-1)*4<=(index-1) && (index-1)<n*4 && hotPlaylist.length<=0" :key="index" v-for="index in 8">
+              <div class="cover">
+                loading...
+              </div>
+              <div style="margin-top:.5rem">
+                ...
               </div>
             </i-col>
           </i-row>
@@ -95,14 +112,23 @@
           </i-col>
         </i-row>
         <div style="margin-bottom:3rem">
-          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+          <i-row :gutter="32" :key="n" style="margin-bottom:2rem" v-for="n in 2">
             <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hotSong">
-              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
-                <img @click="wyPlayMusic(item)" class="card" v-if="item.album.picUrl" :src="item.album.picUrl"
-                  style="height:150px;width:100%" alt="">
+              <div class="cover">
+                <progressive-img @click.native="wyPlayMusic(item)" class="card card-hover"
+                :src="item.album.picUrl"
+                :placeholder="item.album.picUrl"/>
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}} - {{item.artists[0].name}}
+              </div>
+            </i-col>
+            <i-col span="6" v-if="(n-1)*4<=(index-1) && (index-1)<n*4 && hotPlaylist.length<=0" :key="index" v-for="index in 8">
+              <div class="cover">
+                loading...
+              </div>
+              <div style="margin-top:.5rem">
+                ...
               </div>
             </i-col>
           </i-row>
@@ -122,14 +148,23 @@
           </i-col>
         </i-row>
         <div style="margin-bottom:3rem">
-          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+          <i-row :gutter="32" :key="n" style="margin-bottom:2rem" v-for="n in 2">
             <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hightPlaylist">
-              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
-                <img @click="$store.commit('router',{id:item.id,path:'/playlist'})" class="card" v-if="item.coverImgUrl" :src="item.coverImgUrl"
-                  style="height:150px;width:100%" alt="">
+              <div class="cover">
+                  <progressive-img @click.native="$store.commit('router',{id:item.id,path:'/playlist',picUrl:item.coverImgUrl})" class="card card-hover"
+                  :src="item.coverImgUrl"
+                  :placeholder="item.coverImgUrl"/>
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}}
+              </div>
+            </i-col>
+            <i-col span="6" v-if="(n-1)*4<=(index-1) && (index-1)<n*4 && hotPlaylist.length<=0" :key="index" v-for="index in 8">
+              <div class="cover">
+                loading...
+              </div>
+              <div style="margin-top:.5rem">
+                ...
               </div>
             </i-col>
           </i-row>
@@ -149,14 +184,23 @@
           </i-col>
         </i-row>
         <div style="margin-bottom:3rem">
-          <i-row :gutter="32" :key="n.id" style="margin-bottom:2rem" v-for="n in 2">
+          <i-row :gutter="32" :key="n" style="margin-bottom:2rem" v-for="n in 2">
             <i-col span="6" v-if="(n-1)*4<=index && index<n*4" :key="index" v-for="(item,index) in hotArtist">
-              <div class="min-card card-hover cover" style="height:150px;;width:100%;background:#f0f0f0">
-                <img @click="$store.commit('router',{id:item.id,path:'/artist'})" class="card" v-if="item.img1v1Url" :src="item.img1v1Url"
-                  style="height:150px;width:100%" alt="">
+              <div class="cover">
+                  <progressive-img @click.native="$store.commit('router',{id:item.id,path:'/artist'})" class="card card-hover"
+                  :src="item.img1v1Url"
+                  :placeholder="item.img1v1Url"/>
               </div>
               <div style="margin-top:.5rem">
                 {{item.name}}
+              </div>
+            </i-col>
+            <i-col span="6" v-if="(n-1)*4<=(index-1) && (index-1)<n*4 && hotPlaylist.length<=0" :key="index" v-for="index in 8">
+              <div class="cover">
+                loading...
+              </div>
+              <div style="margin-top:.5rem">
+                ...
               </div>
             </i-col>
           </i-row>
@@ -165,9 +209,12 @@
       <i-col span="6">
         <i-row>
           <i-col span="24">
-            <button @click="$store.commit('router', '/search')" class="btn card searchBtn">
+            <!-- <button @click="$store.commit('router', '/search')" class="btn card searchBtn">
               <i-icon type="search"></i-icon>&nbsp;&nbsp;今天也来点小曲
-            </button>
+            </button> -->
+            <md-button @click.native="$store.commit('router', '/search')" class="btn card searchBtn">
+              <i-icon type="search"></i-icon>&nbsp;&nbsp;今天也来点小曲
+            </md-button>
           </i-col>
         </i-row>
         <i-row style="margin-bottom:2rem">
@@ -237,7 +284,11 @@
 <script>
   import api from '../axios'
   import wyApi from '../wyApi'
+  import mdButton from './mdButton'
   export default {
+    components:{
+      mdButton
+    },
     data() {
       return {
         msg: 'TIFI MUSIC - 大道至简 悟在天成',
@@ -267,6 +318,7 @@
         })
       },
       wyPlayMusic(item) {
+
         let musicData = {
           url: item.mp3Url,
           artist: {
@@ -282,11 +334,11 @@
             url: item.mp3Url
           }
         }
-        this.$store.commit('playMusic', musicData)
+        this.$store.dispatch('playMusic', musicData)
       }
     },
     mounted() {
-     
+
       wyApi.getHotPlaylist(8).then((data) => {
         if (data.code == 200) {
           this.hotPlaylist = data.playlists

@@ -54,7 +54,7 @@ const router = new Router({
       path: '/play',
       component: resolve => require(['@/components/Play'], resolve),
       meta: {
-        notKeepAlive: true
+        notKeepAlive: false
       }
     },
     {

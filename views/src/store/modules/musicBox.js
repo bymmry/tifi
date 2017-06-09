@@ -1,14 +1,13 @@
 import api from '../../axios'
+import wyApi from '../../wyApi'
 const state = {
   show: false,
   el: '',
+  url:'',
   musicData: '',
-  onPlay: false,
-  currTime: 0,
-  totalTime: 0,
-  playProgress: 0,
   autoPlay: true,
-  playlist: false
+  playlist: false,
+  songlist:[]
 }
 const mutations = {
   deletePlaylist(state, payload) {
@@ -77,24 +76,30 @@ const mutations = {
   setEl(state, payload) {
     state.el = payload
   },
-  setCurrTime(state, payload) {
-    state.currTime = payload
-  },
-  setTotalTime(state, payload) {
-    state.totalTime = payload
-  },
-  setPlayProgress(state, payload) {
-    state.playProgress = payload
-  },
-  setOnPlay(state, payload) {
-    state.onPlay = payload
-  },
   hideMusicBox(state) {
     state.show = false
   }
 }
 
+const actions = {
+  playMusic({
+    commit
+  }, payload) {
+    // if(payload.url){
+    //   commit('playMusic', payload)
+    // }else{
+      return wyApi.getMusicUrl(payload.music.wyID).then((result) => {
+        if (result.code == 200) {
+          payload.url = result.data[0].url
+          commit('playMusic', payload)
+        }
+      })
+    // }
+  }
+}
+
 export default {
   state,
-  mutations
+  mutations,
+  actions
 }

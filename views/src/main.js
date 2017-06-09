@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+
 import animate from 'animate.css'
 import 'iview/dist/styles/iview.css'
 // import iview from 'iview'
@@ -58,6 +59,13 @@ Vue.component(pagination.name, pagination)
 Vue.component(linearProgress.name, linearProgress)
 Vue.component(flatButton.name, flatButton)
 Vue.component(floatButton.name, floatButton)
+
+
+import VueProgressiveImage from 'vue-progressive-image'
+Vue.use(VueProgressiveImage, {
+  delay: 1000,
+  blur:10
+})
 
 Vue.config.productionTip = false
 

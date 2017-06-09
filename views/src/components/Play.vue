@@ -34,14 +34,13 @@
 <template>
   <div>
     <i-row>
-      <div style="position:fixed;z-index:-1;opacity:0">{{wyID}}</div>
+      <div style="position:fixed;z-index:-1;opacity:0">{{wyID}}{{musicEl.paused}}</div>
       <i-col span="7" class="text-left">
         <affix @on-change="fixedPlayLeft">
           <div style="width:220px">
             <i-circle :percent="playProgress" stroke-color="#41464b" :size="220" :stroke-width="1" :trail-width="0.5">
               <div :style="onPlay?imgPlay:imgPause" :class="{rotateImg:true}">
               </div>
-              <!--<img :src="musicData.album.picUrl" style="">-->
             </i-circle>
             <br/><br/>
             <div class="text-center" v-if="playLeft">
@@ -164,6 +163,9 @@
 <script>
   import api from '../axios.js'
   import wyApi from '../wyApi.js'
+  import {
+  	Message
+  } from 'iview'
   import comment from './comment.vue'
   export default {
     components: {
@@ -171,6 +173,8 @@
     },
     data() {
       return {
+        currTime:0,
+        onPlay:false,
         lyric: [],
         lyricText: ['暂无歌词'],
         lyricTime: [0],
@@ -189,7 +193,8 @@
           '-webkit-animation-play-state': 'running'
         },
         activeLyricTop: 0,
-        playLeft: false
+        playLeft: false,
+        totalTime:0
       }
     },
     computed: {
@@ -213,31 +218,23 @@
         return this.$store.state.musicBox.musicData
       },
       musicEl() {
+
         return this.$store.state.musicBox.el
       },
-      onPlay() {
-        return this.$store.state.musicBox.onPlay
-      },
-      currTime() {
-        for (let index = 0; index < this.lyricTime.length; index++) {
-          if (index !== this.lyricTime.length - 1) {
-            let leftTimeTemp = this.lyricTime[index].split(':')
-            let rightTimeTemp = this.lyricTime[index + 1].split(':')
-            let leftTime = Number(leftTimeTemp[0]) * 60 + Number(leftTimeTemp[1])
-            let rightTime = Number(rightTimeTemp[0]) * 60 + Number(rightTimeTemp[1])
-            if (this.$store.state.musicBox.currTime > leftTime && this.$store.state.musicBox.currTime < rightTime) {
-              this.activeLrcIndex = index
-            }
-          }
-        }
-        return this.$store.state.musicBox.currTime
-      },
-      totalTime() {
-        return this.$store.state.musicBox.totalTime
-      },
+      // onPlay() {
+      //   return this.$store.state.musicBox.onPlay
+      // },
+      // currTime() {
+      //
+      //   return this.$store.state.musicBox.el.currentTime
+      // },
+      // totalTime() {
+      //   return this.$store.state.musicBox.totalTime
+      // },
       playProgress() {
-        return this.$store.state.musicBox.playProgress
-      },
+  			// console.log(this.currTime/this.totalTime)
+  			return this.currTime / this.totalTime * 100
+  		},
       wyID() {
         wyApi.getLyric(this.$store.state.musicBox.musicData.music.wyID).then((data) => {
           if (data.code === 200) {
@@ -298,7 +295,6 @@
       },
       replay() {
         this.musicEl.currentTime = 0;
-        this.$store.commit('setCurrTime', 0)
         this.activeLrcIndex = 0
         this.musicEl.play()
       },
@@ -331,6 +327,27 @@
     },
     mounted() {
       console.log(this.wyID)
+      let el = this.musicEl
+      this.totalTime = el.duration
+      let _this = this
+      el.addEventListener('timeupdate',() => {
+        _this.currTime = el.currentTime
+        _this.onPlay = true
+        for (let index = 0; index < _this.lyricTime.length; index++) {
+          if (index !== _this.lyricTime.length - 1) {
+            let leftTimeTemp = _this.lyricTime[index].split(':')
+            let rightTimeTemp = _this.lyricTime[index + 1].split(':')
+            let leftTime = Number(leftTimeTemp[0]) * 60 + Number(leftTimeTemp[1])
+            let rightTime = Number(rightTimeTemp[0]) * 60 + Number(rightTimeTemp[1])
+            if (_this.currTime > leftTime && _this.currTime < rightTime) {
+              _this.activeLrcIndex = index
+            }
+          }
+        }
+      })
+      el.addEventListener('pause',() => {
+        _this.onPlay = false
+      })
     }
   }
 

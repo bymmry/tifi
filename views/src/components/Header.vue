@@ -63,7 +63,7 @@
   <div class="header" style="padding:3rem 0">
     <div style="line-height:3rem;position:relative">
       <div class="g-logo">
-        <button class="logo">TI/FI</button>
+        <md-button class="logo">TI/FI</md-button>
       </div>
       <i-row>
         <i-col :span="18" :style="{'text-align':'left'}">
@@ -104,11 +104,15 @@
         APP
       </div>
     </div>
-    
+
   </div>
 </template>
 <script lang="">
+  import mdButton from './mdButton'
   export default {
+    components:{
+      mdButton
+    },
     data() {
       return {
         showLoginAndReg: '',

@@ -61,7 +61,7 @@
   <div>
     <i-row>
       <i-col span="6" style="padding-top:.5rem">
-        <img v-if="playlist.picUrl" :src="playlist.picUrl" class="cover card" />
+        <img v-if="picUrl" :src="picUrl" class="cover card" />
         <div v-else class="cover-none card">
           {{playlist.name[0]}}
         </div>
@@ -257,7 +257,8 @@
       return {
         commentData: [],
         hotComment: [],
-        commentShow: false
+        commentShow: false,
+        picUrl:sessionStorage.getItem('playlistPicUrl')
       }
     },
     methods: {

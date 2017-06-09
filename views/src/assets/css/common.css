@@ -150,7 +150,11 @@ background-size: cover;*/
 
 button {
   border: none;
-  outline: none
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+  transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
 }
 
 .c-input {
@@ -243,10 +247,10 @@ button {
   cursor: pointer;
 }
 
-.btn:hover {
+/*.btn:hover {
   background: #616161;
   color: #fff
-}
+}*/
 
 .ellipsis {
   overflow: hidden;
