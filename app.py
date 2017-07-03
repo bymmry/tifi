@@ -8,7 +8,7 @@ from flask_cors import CORS
 # controller
 from controller.test import test
 from controller.index import index
-from controller.audioRec import audioRec
+# from controller.audioRec import audioRec
 from controller.artist import artist
 from controller.album import album
 from controller.music import music
