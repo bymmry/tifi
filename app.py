@@ -28,7 +28,7 @@ app.config['MONGODB_SETTINGS'] = {
 }
 db = MongoEngine(app)
 index(app)
-audioRec(app, db)
+# audioRec(app, db)
 play(app)
 test(app, db)
 artist(app, db)
