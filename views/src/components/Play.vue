@@ -294,7 +294,7 @@
         this.playLeft = val
       },
       replay() {
-        this.musicEl.currentTime = 0;
+        this.musicEl.currentTime = 0
         this.activeLrcIndex = 0
         this.musicEl.play()
       },

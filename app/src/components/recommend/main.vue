@@ -114,9 +114,11 @@
           cover: item.album.picUrl,
           artist: item.artists[0].name,
           name: item.name,
-          wyID: item.id
+          wyID: item.id,
+          needPost:true
         }
-        this.$store.commit('playMusic', musicData)
+        this.$store.dispatch('playMusic', musicData)
+        // this.$store.commit('playMusic', musicData)
       }
     },
     mounted() {

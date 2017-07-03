@@ -152,7 +152,7 @@
           wyApi.getPlaylistDetail(this.id).then((data) => {
             if (data.code == 200) {
               console.log(data)
-              this.data.picUrl = data.playlist.picUrl
+              this.data.picUrl = baseInfo.picUrl
               this.data.info = [{
                 name: '播放',
                 val: data.playlist.playCount
