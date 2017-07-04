@@ -39,7 +39,7 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-let baseURL = 'http://127.0.0.1:5000'
+let baseURL = 'http://www.tifi.me:5000'
 export default {
   //获取手机验证码
   getPhoneCode(data){

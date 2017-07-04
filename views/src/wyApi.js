@@ -15,7 +15,7 @@ instance.interceptors.response.use(response => {
 }, err => {
   return Promise.reject(err)
 })
-let baseURL = 'http://localhost:3000'
+let baseURL = 'http://www.tifi.me:3000'
 export default {
   //使用网易云的搜索
   search(data, type, offset = 0, limit=10) {
