@@ -46,7 +46,7 @@
                   {{key}}
                 </div>
                 <div style="width:620px">
-                  <mu-text-field :value="item" fullWidth/>
+                  <mu-text-field hintTextClass="hintTextClass" :hintText="item" fullWidth/>
                 </div>
               </div>
               <br>
@@ -249,6 +249,11 @@ export default {
               border: 1px solid #9a9a9a;
               height: 45px;
               line-height: 45px;
+              padding-left: 15px
+            }
+            .hintTextClass{
+              height: 46px;
+              line-height: 46px;
               padding-left: 15px
             }
           }

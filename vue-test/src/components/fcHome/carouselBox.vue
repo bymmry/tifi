@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="carousel">
-    <carousel-3d style="z-index:1" :width="575" :height="348" :inverseScaling="500" :perspective="30">
+    <carousel-3d style="z-index:1" :autoplay="true" :width="575" :height="348" :inverseScaling="500" :perspective="30">
       <slide :index="0" class="slide">
         <span style="color:#ff7f02">
             批量管理
