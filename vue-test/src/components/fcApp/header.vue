@@ -10,7 +10,7 @@
       <div class="control">
         <div class="user">
           <div>
-            您好！fengcheng [ 超级管理员 ]&nbsp;&nbsp;
+            您好fengcheng[超级管理员]
           </div>
           <div style="cursor:pointer">
             <mu-icon-button icon="power_settings_new"/>
